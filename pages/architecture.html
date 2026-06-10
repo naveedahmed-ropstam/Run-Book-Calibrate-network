@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="System Architecture — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>System Architecture | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="architecture">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>System Architecture</span>
+</nav>
+
+<h1 class="page-title">System Architecture Overview</h1>
+
+<p class="page-lead">How orders, inventory, shipments and status move across Shopify, Rithum, TechOMS, Logiwa and carriers, and what each system is responsible for.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#diagram">Architecture Diagram</a>
+<a href="#dataflow">Data Flow</a>
+<a href="#responsibilities">System Responsibilities</a>
+<a href="#touchpoints">Integration Touchpoints</a>
+<a href="#sync">Synchronization Points</a>
+</nav>
+
+</header>
+
+<h2 class="section-h" id="diagram">High-Level Architecture Diagram</h2>
+
+<p class="text-muted">Solid lines show order &amp; shipment flow; dotted lines show inventory synchronization. TechOMS sits in the middle as the orchestration layer.</p>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/architecture-high-level.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="architecture high level" />
+  <figcaption>Diagram screenshot — add <code>architecture-high-level.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+<h2 class="section-h" id="dataflow">Data Flow Between Systems</h2>
+
+<aside class="callout callout--note">
+<span class="callout__icon">ℹ️</span>
+<div>
+<strong>The mental model</strong>
+<p>Think of three layers: <strong>Demand</strong> (Shopify + Retailers via Rithum) generates orders, the <strong>Brain</strong> (TechOMS) decides what happens, and the <strong>Hands</strong> (Logiwa + Carriers) physically fulfill. Inventory flows up from the hands; orders flow down from demand; status flows back to everyone.</p>
+
+</div>
+
+</aside>
+
+<ol class="clean">
+<li>
+<strong>Order in:</strong> A DTC shopper checks out on <span class="tag tag--shopify">Shopify</span>; a retail shopper&apos;s order arrives as an EDI 850 to <span class="tag tag--rithum">Rithum</span>. Both land in <span class="tag tag--techoms">TechOMS</span>.</li>
+
+<li>
+<strong>Orchestrate:</strong> TechOMS applies order rules, validates inventory, and routes the order to the correct warehouse/fulfillment channel.</li>
+
+<li>
+<strong>Fulfill:</strong> TechOMS sends a fulfillment order to <span class="tag tag--logiwa">Logiwa</span>, which allocates stock, picks, packs and ships via a <span class="tag tag--carrier">Carrier</span>.</li>
+
+<li>
+<strong>Confirm:</strong> Logiwa returns the ship confirmation + tracking to TechOMS, which writes fulfillment/tracking back to Shopify and sends an 856 ASN (and 810 invoice) through Rithum to the retailer.</li>
+
+<li>
+<strong>Sync inventory:</strong> Logiwa on-hand changes flow up to TechOMS, which republishes available-to-sell to Shopify and Rithum to prevent overselling.</li>
+
+</ol>
+
+<h3 class="sub-h">Inventory Synchronization Path</h3>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/architecture-inventory-sync.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="architecture inventory sync" />
+  <figcaption>Diagram screenshot — add <code>architecture-inventory-sync.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+<h2 class="section-h" id="responsibilities">Responsibilities of Each System</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>Primary Role</th>
+<th>Owns / Responsible For</th>
+<th>Does NOT Do</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>DTC Sales Channel</td>
+<td>Customer-facing storefront, DTC order capture, payment authorization/capture, customer notifications, DTC product catalog.</td>
+<td>Does not manage warehouse operations or retailer EDI. Relies on TechOMS for fulfillment + tracking writeback.</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>Retailer / Channel &amp; EDI Hub</td>
+<td>Marketplace &amp; dropship retailer connections, EDI translation (846/850/855/856/870/810), order normalization, channel inventory feeds, retailer compliance (SLA, labels, ASN timing).</td>
+<td>Does not pick/pack/ship and does not hold physical inventory. Routes orders to TechOMS and relays status back to retailers.</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>Order Management / Orchestration</td>
+<td>Central order hub for all channels, order rules engine, dynamic fulfillment routing, inventory aggregation across channels, WMS sync (orders down, ship confirm up), recurring import/export jobs, IntegratedFlow connectors.</td>
+<td>Does not perform physical warehouse work; delegates fulfillment to Logiwa and channel comms to Shopify/Rithum.</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>Warehouse Management (WMS)</td>
+<td>Physical inventory (system of record for on-hand), receiving &amp; directed putaway, allocation/reservation, picking, packing, carrier label generation &amp; shipping, returns receiving, cycle counts, multi-client billing.</td>
+<td>Does not talk to sales channels directly; receives fulfillment orders from TechOMS and returns ship confirmations to it.</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--carrier">Carriers</span>
+</td>
+<td>Transportation</td>
+<td>Rating, label generation, package transport, tracking events, proof of delivery.</td>
+<td>No order/inventory logic. Integrated through Logiwa (and/or a carrier rate-shop service) for labels and tracking.</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="touchpoints">Integration Touchpoints</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Link</th>
+<th>Direction</th>
+<th>Method</th>
+<th>Data Exchanged</th>
+<th>Frequency</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Shopify -&gt; TechOMS</td>
+<td>Inbound orders / Outbound fulfillment</td>
+<td>API (native connector / IntegratedFlow), webhooks + polling</td>
+<td>New DTC orders, customer &amp; address, line items, payment status; back: tracking, fulfillment status, inventory levels</td>
+<td>Near real-time (webhook) + recurring poll (e.g. every 10-15 min)</td>
+</tr>
+
+<tr>
+<td>Rithum -&gt; TechOMS</td>
+<td>Inbound retailer orders / Outbound ship + invoice</td>
+<td>EDI (846/850/855/856/870/810), Dsco API, or flat-file/SFTP via Data Mapper</td>
+<td>Retailer POs (850), acknowledgments (855), ship notices (856), invoices (810), inventory (846), cancellations (870)</td>
+<td>Scheduled batches (e.g. every 15-30 min) per retailer SLA</td>
+</tr>
+
+<tr>
+<td>TechOMS -&gt; Logiwa</td>
+<td>Outbound fulfillment orders</td>
+<td>API / IntegratedFlow connector (Fulfillment Channel)</td>
+<td>Fulfillment orders, ship-to, items/qty, carrier/service, ship-by date, client/warehouse</td>
+<td>Recurring job (e.g. every 5-15 min) or near real-time</td>
+</tr>
+
+<tr>
+<td>Logiwa -&gt; TechOMS</td>
+<td>Inbound ship confirmations + inventory</td>
+<td>API / IntegratedFlow connector</td>
+<td>Ship confirmations (tracking, carrier, weight, ship date), short-ships, on-hand inventory snapshots</td>
+<td>Near real-time on ship; inventory on schedule (e.g. every 15-30 min)</td>
+</tr>
+
+<tr>
+<td>Logiwa -&gt; Carriers</td>
+<td>Label + tracking</td>
+<td>Carrier API / rate-shop integration</td>
+<td>Package dimensions/weight, service level; back: label (PDF/ZPL), tracking number</td>
+<td>Real-time at pack/ship</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="sync">Common Synchronization Points</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Sync Point</th>
+<th>Flow</th>
+<th>Why It Matters</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Inventory availability</td>
+<td>Logiwa (on-hand) -&gt; TechOMS (ATS) -&gt; Rithum/Shopify (channel feed)</td>
+<td>Prevents overselling. Logiwa is the on-hand source of truth; TechOMS computes available-to-sell and pushes to channels.</td>
+</tr>
+
+<tr>
+<td>Order capture</td>
+<td>Shopify/Rithum -&gt; TechOMS</td>
+<td>All orders converge in TechOMS so rules, routing, and a single status model apply consistently.</td>
+</tr>
+
+<tr>
+<td>Fulfillment dispatch</td>
+<td>TechOMS -&gt; Logiwa</td>
+<td>Released/approved orders become warehouse fulfillment orders for picking.</td>
+</tr>
+
+<tr>
+<td>Ship confirmation</td>
+<td>Logiwa -&gt; TechOMS -&gt; Shopify (fulfillment) &amp; Rithum (856 ASN)</td>
+<td>Tracking must flow back same-day for many retailers; drives customer notifications and invoicing.</td>
+</tr>
+
+<tr>
+<td>Receiving / inbound</td>
+<td>PO in TechOMS -&gt; Logiwa receiving -&gt; on-hand increment -&gt; inventory feed to channels</td>
+<td>New stock becomes sellable only after received and synced upward.</td>
+</tr>
+
+<tr>
+<td>Returns</td>
+<td>Return created (Shopify/Rithum/TechOMS) -&gt; Logiwa receiving/inspection -&gt; inventory adjust -&gt; status/refund back</td>
+<td>Restocks sellable units and closes the loop with the customer/retailer.</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<aside class="callout callout--warning">
+<span class="callout__icon">⚠️</span>
+<div>
+<strong>Most incidents happen at sync points</strong>
+<p>When something looks wrong, first ask: <em>which</em> sync point failed and <em>which direction</em>? An order missing from the warehouse is a TechOMS→Logiwa issue; overselling is an inventory feed issue; a retailer chargeback for a late ASN is a Logiwa→TechOMS→Rithum issue.</p>
+
+</div>
+
+</aside>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

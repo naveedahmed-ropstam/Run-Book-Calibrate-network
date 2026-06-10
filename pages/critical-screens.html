@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Critical Screens — Calibrate Networks Operations & Troubleshooting Handbook" />
+<title>Critical Screens | Calibrate Networks Operations Handbook</title>
+<link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+<link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="critical-screens">
+  <div class="app-shell">
+        <!-- Sidebar -->
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-logo">CN</div>
+
+    <div>
+      <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+
+      <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+
+    </div>
+
+  </div>
+
+  <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+
+  </nav>
+
+</aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true">
+</div>
+
+    <div class="main">
+            <!-- Top bar -->
+<header class="topbar">
+  <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+  <button type="button" class="topbar__search" id="search-open">
+    <span aria-hidden="true">🔍</span>
+    <span>Search the handbook…</span>
+    <kbd>Ctrl K</kbd>
+  </button>
+  <div class="topbar__spacer">
+</div>
+
+  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+</header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Critical Screens</span>
+</nav>
+
+<h1 class="page-title">Critical Screens Reference</h1>
+
+<p class="page-lead">Key TechOMS, Logiwa, and Rithum screens every support analyst must know — what each is for and when to use it.</p>
+
+</header>
+
+<div class="pill-row screen-filters" id="screen-filters">
+<button type="button" class="pill screen-filter active" data-system="all">All Systems</button>
+<button type="button" class="pill screen-filter" data-system="TechOMS">
+<span class="tag tag--techoms">TechOMS</span>
+</button>
+<button type="button" class="pill screen-filter" data-system="Logiwa">
+<span class="tag tag--logiwa">Logiwa</span>
+</button>
+<button type="button" class="pill screen-filter" data-system="Rithum">
+<span class="tag tag--rithum">Rithum</span>
+</button>
+</div>
+
+<section class="screen-section" data-system="TechOMS">
+<h2 class="section-h">
+<span class="tag tag--techoms">TechOMS</span> Screens</h2>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Sales Orders List</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Sales → Sales Orders</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Search and view all orders across channels. Primary starting point for order issues.</p>
+
+<p>
+<strong>When to use:</strong> Customer inquiry, missing order, status check, hold investigation.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Channel order ID, status, hold reason, fulfillment channel, ship-by date.</p>
+
+</article>
+<!-- 
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Sales Order Detail</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Sales → Sales Orders → [order]</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Full order view: lines, addresses, status history, allocations, external references.</p>
+
+<p>
+<strong>When to use:</strong> Any order troubleshooting — trace status changes and references.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> External/channel ID, Logiwa reference, tracking, hold reason, order history.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Sales Channels</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Sales Channels</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Configure and monitor Shopify, Rithum, and other demand source connectors.</p>
+
+<p>
+<strong>When to use:</strong> Import failures, credential issues, connector status checks.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Connector status, last sync, API credentials, channel mapping.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Fulfillment Channels</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Fulfillment Channels</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Configure Logiwa WMS connection for order export and ship confirm.</p>
+
+<p>
+<strong>When to use:</strong> Export failures, ship confirm not received, warehouse mapping issues.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Warehouse mapping, client ID, export job schedule, last run status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Recurring Jobs / Job Logs</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Admin → Jobs / IntegratedFlow Logs</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> View scheduled import, export, and sync job execution history.</p>
+
+<p>
+<strong>When to use:</strong> Any sync failure — first place to check for error messages.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Job name, last run, success/fail, error message, records processed.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Inventory / ATS View</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inventory → Product Inventory</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> View available-to-sell by SKU and warehouse. Compare against Logiwa.</p>
+
+<p>
+<strong>When to use:</strong> Oversell investigation, ATS mismatch, post-receipt verification.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> SKU, warehouse, on-hand, ATS, reserved qty, last sync time.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Order Rules</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Order Rules</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Business rules for holds, routing, splits, and carrier selection.</p>
+
+<p>
+<strong>When to use:</strong> Wrong warehouse, unexpected hold, routing disputes.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Rule name, conditions, actions, priority, active status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Purchase Orders</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Purchasing → Purchase Orders</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Inbound PO management and export status to Logiwa.</p>
+
+<p>
+<strong>When to use:</strong> PO not in warehouse, receiving issues, inbound planning.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> PO number, vendor, status, received qty, export status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">RMA / Returns</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Returns → RMA List</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Return authorization, inspection status, refund tracking.</p>
+
+<p>
+<strong>When to use:</strong> Return inquiries, refund delays, unauthorized returns.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> RMA number, linked order, status, disposition, refund amount.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Product Master / SKU Mapping</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Products → Product Catalog</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> SKU definitions, aliases, and channel cross-references.</p>
+
+<p>
+<strong>When to use:</strong> SKU mapping failures on import, catalog mismatches.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> SKU, UPC, channel aliases, active status, client.</p>
+
+</article>
+
+</section>
+
+<section class="screen-section" data-system="Logiwa">
+<h2 class="section-h">
+<span class="tag tag--logiwa">Logiwa</span> Screens</h2>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Shipment Orders</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Fulfillment → Shipment Orders</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> All outbound orders in the warehouse. Status from open to shipped.</p>
+
+<p>
+<strong>When to use:</strong> Order not shipping, allocation failure, tracking lookup.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Reference number, status, client, carrier, tracking, ship date.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Shipment Order Detail</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Fulfillment → Shipment Orders → [order]</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Lines, allocation, pick/pack/ship history, tracking per carton.</p>
+
+<p>
+<strong>When to use:</strong> Detailed fulfillment troubleshooting, partial ship, label issues.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Lines, allocated locations, tracking, weight, status timeline.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Inventory by Location</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inventory → Inventory Management</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> On-hand and available qty by SKU and location.</p>
+
+<p>
+<strong>When to use:</strong> Allocation failure, inventory discrepancy, cycle count follow-up.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> SKU, location, on-hand, available, allocated, location type.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Expected Receipts (Inbound)</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inbound → Expected Receipts</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Open POs and inbound shipments awaiting receiving.</p>
+
+<p>
+<strong>When to use:</strong> PO not found at dock, receiving planning, inbound delays.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> PO reference, vendor, expected date, lines, status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Receiving</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inbound → Receiving</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Active receiving sessions for PO and return receipts.</p>
+
+<p>
+<strong>When to use:</strong> Receiving issues, discrepancy documentation, scan failures.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Receipt lines, received qty, discrepancy, user, timestamp.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Expected Returns</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inbound → Expected Returns</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Authorized RMAs expected at the returns dock.</p>
+
+<p>
+<strong>When to use:</strong> Return not matching, unauthorized return, RMA export verification.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> RMA number, lines, status, linked order reference.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Allocation View</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Fulfillment → Allocation / Shipment Order Allocations</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> See which inventory is reserved for which orders.</p>
+
+<p>
+<strong>When to use:</strong> Cannot allocate, negative available, stale allocation investigation.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Order, SKU, location, allocated qty, allocation date.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Inventory Adjustments</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inventory → Adjustments</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Manual inventory corrections with reason codes.</p>
+
+<p>
+<strong>When to use:</strong> Post-cycle-count corrections, damage write-offs, receiving fixes.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> SKU, location, adjustment qty, reason, user, approval.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Cycle Count Tasks</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inventory → Cycle Count</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Scheduled and active count tasks with variance results.</p>
+
+<p>
+<strong>When to use:</strong> Inventory accuracy issues, scheduled count follow-up.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Location, SKU, expected vs counted, variance, status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Product Catalog</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Products</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> SKU master per client with barcodes and attributes.</p>
+
+<p>
+<strong>When to use:</strong> SKU scan failure, export rejection, new product setup.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Product code, UPC, client, active, weight/dims.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Carrier Configuration</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Carriers / Shipping</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Carrier accounts, service mappings, and label settings.</p>
+
+<p>
+<strong>When to use:</strong> Label generation failure, wrong carrier, rate shop errors.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Carrier name, account number, services, active status.</p>
+
+</article>
+
+</section>
+
+<section class="screen-section" data-system="Rithum">
+<h2 class="section-h">
+<span class="tag tag--rithum">Rithum</span> Screens</h2>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Orders / PO List</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Orders → Order Management</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> All retailer POs with status, ship-by, and compliance indicators.</p>
+
+<p>
+<strong>When to use:</strong> Retailer order lookup, missing PO in TechOMS, SLA monitoring.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Retailer PO, status, ship-by, cancel-by, trading partner.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Order Detail</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Orders → [PO detail]</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Line items, ship-to, routing requirements, status history.</p>
+
+<p>
+<strong>When to use:</strong> Routing guide compliance, line-level disputes, ASN verification.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Lines, ship-to, routing, label requirements, status events.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">ASN / Ship Confirmations</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Documents → ASN / Ship Notices</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Outbound 856 documents and transmission status.</p>
+
+<p>
+<strong>When to use:</strong> Missing or rejected ASN, retailer compliance issues.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> PO reference, transmission status, SSCC, tracking, timestamp.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Inventory Feeds (846)</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Inventory → Feeds / 846</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Outbound inventory advice documents and rejection log.</p>
+
+<p>
+<strong>When to use:</strong> 846 rejection, oversell risk, inventory feed failures.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> SKU, qty sent, transmission status, rejection reason.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Trading Partners</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Settings → Trading Partners</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Retailer account configuration, EDI IDs, and SLA settings.</p>
+
+<p>
+<strong>When to use:</strong> New retailer onboarding, partner mapping issues, EDI errors.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Partner ID, EDI qualifier, document types, active status.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">EDI Transaction Log</h3>
+
+<p>
+<strong>Navigation:</strong> <code>EDI → Transaction History</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> All inbound/outbound EDI documents with status and errors.</p>
+
+<p>
+<strong>When to use:</strong> EDI translation errors, document rejection, audit trail.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Doc type (850/855/856/846), status, error message, timestamp.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Returns Portal</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Returns → Return Authorizations</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Retailer-initiated returns and authorization status.</p>
+
+<p>
+<strong>When to use:</strong> Retail return inquiries, RMA sync issues.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Return ID, PO reference, status, items, authorization date.</p>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">SKU / Product Mapping</h3>
+
+<p>
+<strong>Navigation:</strong> <code>Catalog → Product Mapping</code>
+</p>
+
+<p>
+<strong>Purpose:</strong> Retailer SKU to vendor SKU cross-reference for EDI.</p>
+
+<p>
+<strong>When to use:</strong> SKU mapping failures, 846 rejections, catalog updates.</p>
+
+<p style="margin-bottom:0">
+<strong>Key fields:</strong> Retailer SKU, vendor SKU, UPC, active status.</p>
+
+</article>
+
+</section>
+
+      </main>
+
+    </div>
+
+<div class="search-overlay" id="search-overlay" hidden>
+  <div class="search-box" role="dialog" aria-label="Search handbook">
+    <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+    <div class="search-results" id="search-results">
+</div>
+
+  </div>
+
+</div>
+
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/critical-screens.js"></script> -->
+</body>
+</html>

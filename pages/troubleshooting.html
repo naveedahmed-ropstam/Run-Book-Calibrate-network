@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Troubleshooting Matrix — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Troubleshooting Matrix | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="troubleshooting">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Troubleshooting Matrix</span>
+</nav>
+
+<h1 class="page-title">Troubleshooting Matrix</h1>
+
+<p class="page-lead">Searchable reference: symptom → likely system → root cause → first-level fix → escalation. Use this for fast triage before diving into process docs.</p>
+
+</header>
+
+<div class="card matrix-filters">
+<input type="search" id="matrix-filter" placeholder="Filter by symptom, system, cause, fix…" aria-label="Filter troubleshooting matrix" />
+<select id="matrix-severity" aria-label="Filter by severity">
+<option value="all">All severities</option>
+<option value="High">High</option>
+<option value="Medium">Medium</option>
+<option value="Low">Low</option>
+</select>
+<span id="matrix-count" class="matrix-count">
+</span>
+</div>
+
+<div class="table-wrap">
+<table class="data" id="matrix-table">
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely System</th>
+<th>Root Cause</th>
+<th>First-Level Fix</th>
+<th>Escalation</th>
+<th>Severity</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr data-severity="High">
+<td>Order in Shopify but not in TechOMS</td>
+<td>TechOMS</td>
+<td>Webhook/import failure, expired API token</td>
+<td>Check connector status; re-run import for order date</td>
+<td>L2 connector admin</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<!-- <tr data-severity="High">
+<td>Retailer PO in Rithum but not TechOMS</td>
+<td>TechOMS</td>
+<td>Import job failure, trading partner mapping</td>
+<td>Check import log; verify partner ID; manual import</td>
+<td>L2 + Rithum EDI team</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Order in TechOMS but not Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>Export job failure, SKU not in Logiwa</td>
+<td>Check export log; verify SKU in Logiwa product master</td>
+<td>L2 fulfillment channel</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Cannot allocate in Logiwa</td>
+<td>Logiwa</td>
+<td>Insufficient available, inventory in quarantine</td>
+<td>Compare on-hand vs available; check location types</td>
+<td>Warehouse supervisor + inventory sync</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Shipped in Logiwa, no tracking in Shopify</td>
+<td>TechOMS → Shopify</td>
+<td>Ship confirm or fulfillment writeback failure</td>
+<td>Verify ship confirm in TechOMS; re-run fulfillment export</td>
+<td>L2 connector</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Shipped but no 856 ASN to retailer</td>
+<td>TechOMS → Rithum</td>
+<td>ASN job failure, missing SSCC</td>
+<td>Check ASN queue; verify carton SSCC in ship confirm</td>
+<td>EDI team</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Channel shows stock, warehouse empty</td>
+<td>Inventory sync</td>
+<td>Stale ATS feed, ship confirm backlog</td>
+<td>Compare Logiwa on-hand vs TechOMS ATS; pause channel feed</td>
+<td>Inventory control + L2 sync</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Oversell — order accepted but no stock</td>
+<td>Inventory sync</td>
+<td>ATS &gt; Logiwa available, sync lag</td>
+<td>Reconcile ATS; backorder/cancel newest orders</td>
+<td>Client notification + L2</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Carrier label generation failed</td>
+<td>Logiwa / Carrier</td>
+<td>Bad address, invalid service, account issue</td>
+<td>Validate address; check carrier API error; try backup carrier</td>
+<td>Warehouse supervisor</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>PO approved but not in Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>PO export failure, SKU missing</td>
+<td>Re-run PO export; verify SKU setup</td>
+<td>L2 inbound connector</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Received inventory not in channel ATS</td>
+<td>Inventory sync</td>
+<td>Putaway incomplete, sync delay</td>
+<td>Confirm putaway to pickable; re-run inventory sync</td>
+<td>Warehouse putaway team</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Receiving qty mismatch</td>
+<td>Logiwa</td>
+<td>Vendor short ship, count error</td>
+<td>Document discrepancy; receive actual qty; notify client</td>
+<td>Receiving supervisor + client</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Return received, no refund issued</td>
+<td>TechOMS → Shopify</td>
+<td>Inspection pending, refund rule not triggered</td>
+<td>Check RMA status and inspection disposition; trigger refund</td>
+<td>L2 refund automation</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>RMA authorized but not in Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>Return export failure</td>
+<td>Re-run return export; create expected return manually</td>
+<td>L2 return connector</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>855 acknowledgment late/missing</td>
+<td>TechOMS → Rithum</td>
+<td>Order on hold, ack job failure</td>
+<td>Release hold; trigger 855; check cancel-by deadline</td>
+<td>Retailer compliance team</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>846 inventory feed rejected</td>
+<td>TechOMS → Rithum</td>
+<td>Bad retailer SKU mapping, negative qty</td>
+<td>Fix SKU cross-ref; resend 846</td>
+<td>EDI team</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Duplicate shipment orders in Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>Re-export without idempotency</td>
+<td>Cancel duplicate before pick; fix dedupe config</td>
+<td>L2 connector</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Order stuck On Hold in TechOMS</td>
+<td>TechOMS</td>
+<td>Fraud rule, bad address, missing field</td>
+<td>Read hold reason; fix data; release hold</td>
+<td>L2 order rules</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Cancel request failed — already shipped</td>
+<td>Multi-system</td>
+<td>Cancel arrived after ship confirm</td>
+<td>Reject cancel; initiate return if needed</td>
+<td>Client policy decision</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>SKU mapping failure on import</td>
+<td>TechOMS</td>
+<td>SKU not in product master or alias table</td>
+<td>Add SKU mapping; re-import order</td>
+<td>Client catalog team</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Wrong warehouse routed</td>
+<td>TechOMS</td>
+<td>Routing rule misconfiguration</td>
+<td>Reassign fulfillment channel; review routing rules</td>
+<td>L2 order rules admin</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Tracking number invalid / not scannable</td>
+<td>Logiwa / Carrier</td>
+<td>Test label, voided shipment, typo</td>
+<td>Verify in carrier portal; re-ship if voided</td>
+<td>Warehouse supervisor</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Cycle count large variance</td>
+<td>Logiwa</td>
+<td>Pick error, theft, receiving mistake</td>
+<td>Recount; pull transaction history; adjust with approval</td>
+<td>Inventory control</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Negative available in Logiwa</td>
+<td>Logiwa</td>
+<td>Over-allocation, pick without allocation</td>
+<td>Release stale allocations; review pick transactions</td>
+<td>Warehouse + L2</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Retailer chargeback for late shipment</td>
+<td>Multi-system</td>
+<td>Warehouse delay, export failure, carrier miss</td>
+<td>Trace timeline; document root cause for dispute</td>
+<td>Client + compliance team</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Shopify inventory not updating</td>
+<td>TechOMS → Shopify</td>
+<td>Inventory push job failure, location mapping</td>
+<td>Check push job log; verify variant mapping</td>
+<td>L2 connector</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Low">
+<td>Unauthorized return received at dock</td>
+<td>Logiwa</td>
+<td>No RMA, customer sent without authorization</td>
+<td>Quarantine; lookup order in TechOMS; create retroactive RMA</td>
+<td>Returns desk + client</td>
+<td>
+<span class="tag tag--low">Low</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>Restocked damaged return</td>
+<td>Logiwa</td>
+<td>Inspection skipped or wrong disposition</td>
+<td>Pull from pickable immediately; re-inspect; adjust</td>
+<td>QA supervisor + client</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="High">
+<td>API 401 / authentication errors</td>
+<td>Any connector</td>
+<td>Expired credentials, revoked tokens</td>
+<td>Re-authenticate connector; test API call</td>
+<td>L2 admin credentials vault</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium">
+<td>Partial ship not reflected on order</td>
+<td>TechOMS</td>
+<td>Partial ship handling not configured</td>
+<td>Verify partial ship lines; manually update remaining qty</td>
+<td>L2 order config</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr> -->
+
+</tbody>
+
+</table>
+
+</div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/troubleshooting.js"></script>
+</body>
+</html>

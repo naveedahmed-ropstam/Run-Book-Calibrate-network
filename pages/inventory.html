@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Inventory Flow + Troubleshooting — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Inventory Flow + Troubleshooting | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="inventory">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Inventory Flow</span>
+</nav>
+
+<h1 class="page-title">Inventory Flow + Troubleshooting</h1>
+
+<p class="page-lead">How inventory moves through receiving, allocation, reservation, adjustment, cross-system synchronization, reconciliation, and cycle counts — plus methodology for diagnosing mismatches.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#inventory-receiving">Inventory Receiving (Inbound)</a>
+<a href="#inventory-allocation">Inventory Allocation</a>
+<a href="#inventory-reservation">Inventory Reservation (OMS + WMS)</a>
+<a href="#inventory-adjustment">Inventory Adjustment</a>
+<a href="#inventory-sync">Cross-System Inventory Synchronization</a>
+<a href="#inventory-reconciliation">Inventory Reconciliation Process</a>
+<a href="#cycle-count">Cycle Count Process</a>
+<a href="#mismatch-methodology">Inventory Mismatch Troubleshooting Methodology</a>
+</nav>
+
+</header>
+
+<aside class="callout callout--tip">
+<span class="callout__icon">✅</span>
+<div>
+<strong>Source of truth</strong>
+<p>Logiwa is the system of record for physical on-hand inventory. TechOMS computes available-to-sell (ATS) and publishes to channels. Never &quot;fix&quot; a channel without fixing Logiwa first.</p>
+
+</div>
+
+</aside>
+
+<section class="process" id="inventory-receiving">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">1</span>Inventory Receiving (Inbound)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Increase on-hand inventory when inbound POs and returns are received and put away to pickable locations.</p>
+
+</div>
+<!-- 
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Accurately reflect physical stock so sales channels can sell without overselling.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-1.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 1" />
+  <figcaption>Diagram screenshot — add <code>inventory-1.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Receive transaction</span>
+<div>Inbound qty recorded against PO or RMA.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Putaway to pickable</span>
+<div>Inventory moves from staging/quarantine to sellable location type.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa → TechOMS</div>
+
+<span class="step-title">Inventory sync</span>
+<div>On-hand snapshot pushed on schedule.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Receipt transactions</li>
+
+<li>Location types</li>
+
+<li>SKU master</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Updated on-hand</li>
+
+<li>TechOMS ATS</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>On-hand N</code>
+</td>
+<td>
+<code>On-hand N + received qty</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Putaway complete</li>
+
+<li>Only pickable locations count toward ATS</li>
+
+<li>Sync job success</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa inventory by SKU/location</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS ATS for SKU</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Received but ATS unchanged</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Inventory in staging/non-pickable location or sync delay.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check location type</li>
+
+<li>Verify putaway complete</li>
+
+<li>Check sync job log</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Complete putaway; re-run inventory sync.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: location and sync check</li>
+
+<li>Warehouse: putaway backlog</li>
+
+<li>L2: sync connector</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Same-day putaway SLA</li>
+
+<li>Verify ATS after large receipts</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-allocation">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">2</span>Inventory Allocation</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Reserve specific on-hand inventory against shipment orders so pickers are directed to correct locations.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Prevent double-allocation of the same units and enable efficient directed picking.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-2.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 2" />
+  <figcaption>Diagram screenshot — add <code>inventory-2.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Allocation run</span>
+<div>System selects inventory by strategy (FIFO, FEFO, zone). Reserves qty per line.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Pick task generation</span>
+<div>Tasks created with source location, SKU, qty.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Open shipment orders</li>
+
+<li>On-hand by location</li>
+
+<li>Allocation rules</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Allocated lines</li>
+
+<li>Pick tasks</li>
+
+<li>Reduced available (not on-hand) qty</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Open order</code>
+</td>
+<td>
+<code>Allocated</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Allocation qty = order line qty (or short approved)</li>
+
+<li>No negative available after allocation</li>
+
+<li>Locations are pickable and not quarantine</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa allocation detail</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Available vs on-hand for SKU</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Allocation failed — insufficient available</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>On-hand exists but already allocated to other orders, or in non-pickable location.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare on-hand vs available for SKU</li>
+
+<li>List open allocations for SKU</li>
+
+<li>Check location types holding stock</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Release stale allocations, transfer inventory, or short-ship per approval.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: available vs on-hand analysis</li>
+
+<li>Warehouse: release incorrect allocations</li>
+
+<li>L2: allocation strategy config</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Daily stale allocation report</li>
+
+<li>FIFO for dated product</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-reservation">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">3</span>Inventory Reservation (OMS + WMS)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Soft-reserve inventory at OMS level and hard-allocate at WMS to prevent overselling across channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Maintain accurate available-to-sell across Shopify and Rithum while warehouse executes picks.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-3.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 3" />
+  <figcaption>Diagram screenshot — add <code>inventory-3.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Soft reservation</span>
+<div>On order release, ATS reduced by order qty before WMS export.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Hard allocation</span>
+<div>Specific units reserved at location level on export/allocation.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Both</div>
+
+<span class="step-title">Release on ship or cancel</span>
+<div>Reservation released when shipped; restored on cancel.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Order lines</li>
+
+<li>ATS in TechOMS</li>
+
+<li>On-hand in Logiwa</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Reduced ATS</li>
+
+<li>Allocated inventory</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>ATS X</code>
+</td>
+<td>
+<code>ATS X - order qty</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Available Y</code>
+</td>
+<td>
+<code>Available Y - order qty</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>ATS never negative in TechOMS</li>
+
+<li>Sum of open order reservations + ATS ≈ Logiwa available</li>
+
+<li>Cancelled orders release reservation in both systems</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS ATS and open orders for SKU</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa on-hand vs available</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Oversell — ATS showed stock but allocation failed</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>ATS sync lag; TechOMS ATS higher than Logiwa available.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare TechOMS ATS vs Logiwa available at incident time</li>
+
+<li>Check last inventory sync timestamp</li>
+
+<li>List orders reserving the SKU</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Pause channel feed until reconciled; fix sync; backorder or cancel newest orders.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: ATS vs available comparison</li>
+
+<li>L2: reservation and sync config</li>
+
+<li>Client: oversell communication</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Safety stock buffer per channel</li>
+
+<li>Alert when ATS vs Logiwa variance &gt; threshold</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-adjustment">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">4</span>Inventory Adjustment</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Correct on-hand quantities for damage, loss, found stock, receiving corrections, or write-offs.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Keep physical and system inventory aligned with auditable approval trail.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-4.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 4" />
+  <figcaption>Diagram screenshot — add <code>inventory-4.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Operations</div>
+
+<span class="step-title">Document reason</span>
+<div>Damage, cycle count variance, receiving error, theft, etc.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Post adjustment</span>
+<div>Positive or negative qty change at location level.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa → TechOMS</div>
+
+<span class="step-title">Sync upward</span>
+<div>ATS updated on next inventory job.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Reason code</li>
+
+<li>SKU, location, qty delta</li>
+
+<li>Approver (if required)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Adjustment record</li>
+
+<li>Updated on-hand</li>
+
+<li>Updated ATS</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>On-hand N</code>
+</td>
+<td>
+<code>On-hand N ± delta</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Reason code mandatory</li>
+
+<li>Supervisor approval for adjustments above threshold</li>
+
+<li>Channel ATS reflects change after sync</li>
+
+<li>No adjustment without physical verification</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa adjustment transaction</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Approval email/ticket</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Before/after on-hand</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Adjustment made but ATS unchanged</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Sync delay or adjusted non-reporting location.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify location in sync scope</li>
+
+<li>Check sync job</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-run sync; move inventory to reporting location if needed.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Supervisor: approval</li>
+
+<li>Inventory control: large variances</li>
+
+<li>Client: damage billing</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Never adjust to match channel without physical count</li>
+
+<li>Weekly adjustment summary review</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-sync">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">5</span>Cross-System Inventory Synchronization</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Keep Logiwa on-hand, TechOMS ATS, Shopify, and Rithum (846) inventory feeds aligned.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Prevent overselling and underselling across all channels with predictable sync latency.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-5.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 5" />
+  <figcaption>Diagram screenshot — add <code>inventory-5.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa → TechOMS</div>
+
+<span class="step-title">On-hand snapshot</span>
+<div>Scheduled job sends per-SKU on-hand by warehouse.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">ATS calculation</span>
+<div>ATS = on-hand - reservations - safety stock - holds (per config).</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Channels</div>
+
+<span class="step-title">Publish</span>
+<div>Shopify inventory API and Rithum 846 feed update channel availability.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Logiwa on-hand by SKU/warehouse</li>
+
+<li>Reservation data</li>
+
+<li>Safety stock rules</li>
+
+<li>Channel mappings</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS ATS</li>
+
+<li>Shopify variant inventory</li>
+
+<li>Rithum 846 documents</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Sync jobs running on schedule — no gaps &gt; 2x interval</li>
+
+<li>ATS ≤ Logiwa available for each SKU</li>
+
+<li>Channel inventory matches TechOMS ATS within tolerance</li>
+
+<li>846 accepted by Rithum without rejection</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa vs TechOMS side-by-side for sample SKUs</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS inventory job log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify inventory level</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum 846 transmission log</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Channel shows stock but warehouse cannot allocate</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>ATS inflated vs Logiwa; stale sync or missing reservation logic.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare all three systems</li>
+
+<li>Check sync timestamps</li>
+
+<li>Review safety stock settings</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Pause channel feed; reconcile Logiwa; force sync; restore feed.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">846 rejected by Rithum</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Invalid retailer SKU mapping, bad qty, or format non-compliance.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Read 846 rejection reason</li>
+
+<li>Verify retailer SKU cross-ref</li>
+
+<li>Check qty not negative</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix mapping; resend 846; verify retailer portal updated.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: three-way compare</li>
+
+<li>L2: sync connector and ATS rules</li>
+
+<li>EDI team: 846 issues</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Monitor sync job failures with paging</li>
+
+<li>Daily ATS variance report top 20 SKUs</li>
+
+<li>Document safety stock per client</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-reconciliation">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">6</span>Inventory Reconciliation Process</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Systematically identify and resolve inventory discrepancies between Logiwa, TechOMS, and channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Maintain inventory accuracy above client SLA (typically 98%+) and prevent recurring drift.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-6.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 6" />
+  <figcaption>Diagram screenshot — add <code>inventory-6.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Operations</div>
+
+<span class="step-title">Export snapshots</span>
+<div>Pull on-hand from Logiwa, ATS from TechOMS, channel qty for same timestamp window.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Operations</div>
+
+<span class="step-title">Compare and flag</span>
+<div>Flag SKUs where variance exceeds threshold (e.g. ±2 units or ±1%).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Operations</div>
+
+<span class="step-title">Root cause analysis</span>
+<div>Trace receipts, shipments, adjustments, sync gaps for flagged SKUs.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Correct at source</span>
+<div>Physical count if needed; adjustment in Logiwa; then re-sync.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Inventory snapshots from all systems</li>
+
+<li>Variance threshold config</li>
+
+<li>Transaction history</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Reconciliation report</li>
+
+<li>Corrective adjustments</li>
+
+<li>Aligned ATS</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Reconciliation run at least weekly per client</li>
+
+<li>Every variance has documented root cause</li>
+
+<li>Corrections made in Logiwa before channel</li>
+
+<li>Post-fix variance within threshold</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Reconciliation spreadsheet/report</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Transaction history for variance SKU</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Post-fix comparison</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Recurring variance on same SKU</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Systemic issue: sync failure, pick not confirmed, duplicate SKU mapping, or theft.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>30-day transaction history</li>
+
+<li>Check pick/ship confirm integrity</li>
+
+<li>Review SKU aliases</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix systemic issue; cycle count SKU; add to watchlist.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Inventory control: physical count</li>
+
+<li>L2: sync connector</li>
+
+<li>Client: shrink/theft investigation</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Weekly reconciliation minimum</li>
+
+<li>ABC analysis — daily check on A SKUs</li>
+
+<li>Never adjust channel directly</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="cycle-count">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">7</span>Cycle Count Process</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Periodically count physical inventory in locations to verify system accuracy and correct drift.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Catch inventory errors before they cause oversells, mis-picks, or client billing disputes.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-7.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 7" />
+  <figcaption>Diagram screenshot — add <code>inventory-7.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Generate count plan</span>
+<div>ABC-based schedule: A items counted frequently, C items less often.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Execute count</span>
+<div>Blind count — counter does not see expected qty until after entry.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Variance resolution</span>
+<div>Recount if over tolerance; adjustment with reason if confirmed.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Count schedule</li>
+
+<li>Location/SKU assignments</li>
+
+<li>Physical count results</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Count completion</li>
+
+<li>Adjustments</li>
+
+<li>Accuracy metrics</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>On-hand system</code>
+</td>
+<td>
+<code>On-hand actual</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Blind count procedure followed</li>
+
+<li>Recount before adjustment if variance &gt; tolerance</li>
+
+<li>Supervisor approves adjustments</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa cycle count task</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Variance report</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Adjustment record</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Large cycle count variance</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Mis-pick not caught, putaway error, theft, or receiving error.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Pull 30-day moves for location</li>
+
+<li>Check recent picks and receipts</li>
+
+<li>Interview warehouse staff</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Adjust after recount; investigate root cause; retrain if procedural.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Inventory control supervisor</li>
+
+<li>Client: significant shrink notification</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Count during low-activity windows</li>
+
+<li>Do not count during active pick of same location</li>
+
+<li>Track accuracy % monthly</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="mismatch-methodology">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">8</span>Inventory Mismatch Troubleshooting Methodology</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Provide a repeatable methodology for diagnosing inventory discrepancies across the full stack.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Reduce mean-time-to-resolution for inventory incidents and prevent repeat occurrences.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/inventory-8.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="inventory 8" />
+  <figcaption>Diagram screenshot — add <code>inventory-8.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Confirm the problem</span>
+<div>What SKU, which client, which systems disagree, when noticed?</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Logiwa first</span>
+<div>On-hand, available, allocated, location breakdown.</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Trace transactions</span>
+<div>Receipts, ships, adjustments, counts in the relevant window.</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Check sync</span>
+<div>Last successful inventory job timestamps and errors.</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Fix and verify</span>
+<div>Correct in Logiwa; force sync; verify all channels within 2 sync cycles.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>SKU</li>
+
+<li>Client</li>
+
+<li>Symptom description</li>
+
+<li>Timestamp when first noticed</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Root cause documented</li>
+
+<li>Corrected inventory</li>
+
+<li>Preventive action item</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>All 9 steps completed</li>
+
+<li>Post-fix three-way match</li>
+
+<li>Ticket documents root cause category</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Each methodology step output</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Final three-way match screenshot</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Phantom inventory — ATS &gt; 0 but warehouse empty</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Ship confirm not processed, adjustment missing, or inventory in wrong client account.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Physical verification</li>
+
+<li>Unshipped orders still reserving</li>
+
+<li>Search all locations including staging</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Zero out after physical confirm; fix ship confirm backlog.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Negative available in Logiwa</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Over-allocation or pick confirm without allocation.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>List allocations vs picks</li>
+
+<li>Check for manual inventory moves</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Release stale allocations; correct pick transactions.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: complete methodology steps 1-7</li>
+
+<li>Inventory control: physical count (step 2 confirmation)</li>
+
+<li>L2: sync connector and ATS rules</li>
+
+<li>Client: shrink, product launch issues</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Always Logiwa first — never channel first</li>
+
+<li>Categorize root causes for monthly trending</li>
+
+<li>Add recurring SKUs to enhanced monitoring</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Onboarding Guide — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Onboarding Guide | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="onboarding">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Onboarding Guide</span>
+</nav>
+
+<h1 class="page-title">New Employee Onboarding Guide</h1>
+
+<p class="page-lead">Week-by-week ramp plan, access checklist, system ownership map, and daily monitoring routine for operations and support analysts.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#weeks">Week-by-Week Plan</a>
+<a href="#access">Access Checklist</a>
+<a href="#ownership">Who Owns What</a>
+<a href="#daily">Daily Monitoring</a>
+</nav>
+
+</header>
+
+<article class="card">
+  <h3 style="font-weight:600;margin-bottom:12px;">Logiwa Training Videos</h3>
+
+  <table style="width:100%; border-collapse:collapse;">
+  
+    <thead>
+  
+      <tr>
+  
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;">Topic</th>
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;">Video</th>
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;"></th>
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;">Video</th>
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;"></th>
+        <th style="padding:10px; text-align:left; border-bottom:2px solid #ddd;">Video</th>
+      </tr>
+    </thead>
+    <tbody>
+  
+      <tr>
+  
+        <td style="padding:8px;">📦 How To Create A Shipment Order</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/ABEhjOO3" target="_blank">View</a></td>
+  
+        <td style="padding:8px;">🏢 How To Create A B2B Shipment Order</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/p9JUYjj2" target="_blank">View</a></td>
+        <td style="padding:8px;">🚚 How To View Shipped Orders</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/rdkfeNAk" target="_blank">View</a></td>
+      </tr>
+  
+      <tr>
+
+        <td style="padding:8px;">📜 How To View Shipment History</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/mw9TQAd9" target="_blank">View</a></td>
+  
+        <td style="padding:8px;">📝 How To Input A Purchase Order</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/G4yiQA7O" target="_blank">View</a></td>
+  
+        <td style="padding:8px;">📋 How To View Receiving History</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/7R7HwXrq" target="_blank">View</a></td>
+  
+      </tr>
+  
+      <tr>
+  
+        <td style="padding:8px;">↩️ How To Return An Order</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/4m6taAK2" target="_blank">View</a></td>
+
+        <td style="padding:8px;">📦 How To View Total Inventory</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/lWVSwZwJ" target="_blank">View</a></td>
+  
+        <td style="padding:8px;">📍 How To View Inventory By Location</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/dNyhvGQN" target="_blank">View</a></td>
+      </tr>
+  
+      <tr>
+        <td></td>
+        <td></td>
+        <td style="padding:8px;">✅ How To View Available To Promise</td>
+  
+        <td style="padding:8px;"><a href="https://share.birdie.so/i/K72HGDma" target="_blank">View</a></td>
+  
+      </tr>
+  
+    </tbody>
+  
+  </table>
+  
+  </article>
+<!-- 
+<aside class="callout callout--tip">
+<span class="callout__icon">✅</span>
+<div>
+<strong>Your first day</strong>
+<p>Read <a href="architecture.html">System Architecture</a>, complete the <a href="#access">Access Checklist</a> with your manager, then shadow one live ticket end-to-end.</p>
+
+</div>
+
+</aside>
+
+<h2 class="section-h" id="weeks">Week-by-Week Ramp Plan</h2>
+
+<article class="card">
+<h3 class="sub-h">Week 1: Foundations — Learn the Stack</h3>
+
+<p style="font-weight:600;margin-bottom:8px">Goals</p>
+
+<ul class="clean">
+<li>Understand what each system does and does not do</li>
+
+<li>Navigate critical screens in TechOMS, Logiwa, and Rithum</li>
+
+<li>Trace a sample DTC order end-to-end on paper</li>
+
+</ul>
+
+<p style="font-weight:600;margin-bottom:8px">Tasks</p>
+
+<ul class="clean">
+<li>Read System Architecture and Sales Order Flow sections in this handbook</li>
+
+<li>Complete access checklist (below) with your manager</li>
+
+<li>Shadow a senior analyst on 3 live support tickets</li>
+
+<li>Draw the order flow from memory — review with mentor</li>
+
+<li>Complete glossary quiz (self-test: define OMS, WMS, ATS, ASN, 850, 856)</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">Week 2: Hands-On — First-Level Troubleshooting</h3>
+
+<p style="font-weight:600;margin-bottom:8px">Goals</p>
+
+<ul class="clean">
+<li>Perform independent order lookup across all systems</li>
+
+<li>Use the troubleshooting matrix for triage</li>
+
+<li>Handle simple import/sync failures with runbook</li>
+
+</ul>
+
+<p style="font-weight:600;margin-bottom:8px">Tasks</p>
+
+<ul class="clean">
+<li>Resolve 5 supervised tickets using the Sales Order debugging steps</li>
+
+<li>Run daily monitoring routine (below) with mentor review</li>
+
+<li>Practice global search (Ctrl+K) to find process docs quickly</li>
+
+<li>Document one incident with screenshots from each system</li>
+
+<li>Review Purchase Order and Returns flows</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">Week 3: Depth — Inventory &amp; Integration</h3>
+
+<p style="font-weight:600;margin-bottom:8px">Goals</p>
+
+<ul class="clean">
+<li>Diagnose inventory mismatches using the 9-step methodology</li>
+
+<li>Understand EDI document flow and retailer SLAs</li>
+
+<li>Configure-aware: know where sync jobs live</li>
+
+</ul>
+
+<p style="font-weight:600;margin-bottom:8px">Tasks</p>
+
+<ul class="clean">
+<li>Complete one inventory reconciliation exercise (supervised)</li>
+
+<li>Review Integration Guide for all five links</li>
+
+<li>Identify sync schedules and locate job logs in each system</li>
+
+<li>Handle 3 tickets independently; mentor reviews before close</li>
+
+<li>Read retailer profile docs for top 3 clients</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">Week 4: Independence — Full Ownership</h3>
+
+<p style="font-weight:600;margin-bottom:8px">Goals</p>
+
+<ul class="clean">
+<li>Own daily monitoring routine independently</li>
+
+<li>Escalate correctly per escalation paths</li>
+
+<li>Contribute one documentation improvement</li>
+
+</ul>
+
+<p style="font-weight:600;margin-bottom:8px">Tasks</p>
+
+<ul class="clean">
+<li>Run daily health check and report findings</li>
+
+<li>Close 10 tickets independently across order, inventory, and return categories</li>
+
+<li>Present one root-cause analysis to the team (5-min share)</li>
+
+<li>Add one entry to troubleshooting matrix or update a screenshot list</li>
+
+<li>30-day check-in with manager: gaps and next learning goals</li>
+
+</ul>
+
+</article>
+
+<h2 class="section-h" id="access">Access Checklist</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>Access Level</th>
+<th>Request From</th>
+<th>Priority</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>TechOMS</td>
+<td>Read + limited write (release holds, notes)</td>
+<td>IT / OMS Admin</td>
+<td>Day 1</td>
+</tr>
+
+<tr>
+<td>Logiwa</td>
+<td>Read-only (no warehouse transactions)</td>
+<td>WMS Admin</td>
+<td>Day 1</td>
+</tr>
+
+<tr>
+<td>Rithum / Dsco</td>
+<td>Portal read access</td>
+<td>EDI / Channel Manager</td>
+<td>Day 1</td>
+</tr>
+
+<tr>
+<td>Shopify (client stores)</td>
+<td>Staff or collaborator read</td>
+<td>Client / DTC Manager</td>
+<td>Day 2</td>
+</tr>
+
+<tr>
+<td>Ticketing system</td>
+<td>Agent</td>
+<td>Support Lead</td>
+<td>Day 1</td>
+</tr>
+
+<tr>
+<td>Confluence / Notion / SharePoint</td>
+<td>Read + comment</td>
+<td>Ops Manager</td>
+<td>Day 1</td>
+</tr>
+
+<tr>
+<td>Monitoring dashboard</td>
+<td>View</td>
+<td>L2 / DevOps</td>
+<td>Week 2</td>
+</tr>
+
+<tr>
+<td>Carrier portals (UPS/FedEx)</td>
+<td>Tracking lookup only</td>
+<td>Warehouse Manager</td>
+<td>Week 2</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="ownership">Who Owns What</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Area</th>
+<th>Primary Owner</th>
+<th>Secondary</th>
+<th>Vendor Escalation</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Order import failures (Shopify/Rithum)</td>
+<td>L1 Support</td>
+<td>L2 OMS Admin</td>
+<td>TechOMS support</td>
+</tr>
+
+<tr>
+<td>Order export to Logiwa</td>
+<td>L1 Support</td>
+<td>L2 OMS Admin</td>
+<td>TechOMS + Logiwa</td>
+</tr>
+
+<tr>
+<td>Pick/pack/ship issues</td>
+<td>Warehouse Supervisor</td>
+<td>L1 Support</td>
+<td>Logiwa support</td>
+</tr>
+
+<tr>
+<td>Ship confirm / tracking sync</td>
+<td>L1 Support</td>
+<td>L2 Integration</td>
+<td>TechOMS support</td>
+</tr>
+
+<tr>
+<td>Inventory sync / ATS</td>
+<td>L1 Support</td>
+<td>Inventory Control</td>
+<td>TechOMS + Logiwa</td>
+</tr>
+
+<tr>
+<td>EDI / ASN / 846 issues</td>
+<td>L1 Support</td>
+<td>EDI Team</td>
+<td>Rithum support</td>
+</tr>
+
+<tr>
+<td>Receiving / PO issues</td>
+<td>Receiving Lead</td>
+<td>L1 Support</td>
+<td>Logiwa support</td>
+</tr>
+
+<tr>
+<td>Returns / RMA / refunds</td>
+<td>L1 Support</td>
+<td>Returns Desk</td>
+<td>TechOMS + Shopify</td>
+</tr>
+
+<tr>
+<td>Client policy decisions</td>
+<td>Client Ops Manager</td>
+<td>Account Manager</td>
+<td>—</td>
+</tr>
+
+<tr>
+<td>Connector credentials / API</td>
+<td>L2 Admin</td>
+<td>IT Security</td>
+<td>Per system</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="daily">Daily Monitoring Routine</h2>
+
+<p class="text-muted">Run this every morning shift (~75 min total). Document findings in the team channel or monitoring log.</p>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Order import health</h3>
+
+<span class="pill">15 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Check TechOMS import jobs (Shopify + Rithum) — any failures in last 24h? Orders on hold &gt; 4h?</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Export to warehouse</h3>
+
+<span class="pill">10 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">TechOMS → Logiwa export job success rate. Any released-but-not-exported orders?</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Ship confirm backlog</h3>
+
+<span class="pill">10 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Compare Logiwa shipped today vs TechOMS confirmed. Any &gt; 1h gap?</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Inventory sync</h3>
+
+<span class="pill">15 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Verify inventory job ran within expected interval. Spot-check 5 A SKUs: Logiwa on-hand vs TechOMS ATS.</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Retailer compliance</h3>
+
+<span class="pill">10 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Any late 855/856? Any 846 rejections? Orders approaching ship-by deadline not yet allocated?</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Returns queue</h3>
+
+<span class="pill">5 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Authorized RMAs without receipt &gt; 7 days. Received but not inspected &gt; 48h.</p>
+
+</article>
+
+<article class="card">
+<div style="display:flex;justify-content:space-between;gap:12px">
+<h3 class="sub-h" style="margin:0">Ticket review</h3>
+
+<span class="pill">10 min</span>
+</div>
+
+<p style="margin:10px 0 0;color:var(--text-muted)">Open P1/P2 tickets — any aging &gt; SLA? Assign or escalate.</p>
+
+</article>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

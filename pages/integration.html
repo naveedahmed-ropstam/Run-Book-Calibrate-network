@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Integration Guide — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Integration Guide | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="integration">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Integration Guide</span>
+</nav>
+
+<h1 class="page-title">Integration Guide</h1>
+
+<p class="page-lead">Per-link integration details, EDI document flows, data mapping examples, sync schedules, error handling, and monitoring recommendations for the full fulfillment stack.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#links">Per-Link Guides</a>
+<a href="#edi-flow">EDI Document Flow</a>
+<a href="#data-mapping">Data Mapping</a>
+<a href="#sync-schedules">Sync Schedules</a>
+<a href="#error-handling">Error Handling</a>
+<a href="#monitoring">Monitoring &amp; Alerts</a>
+</nav>
+
+</header>
+
+<aside class="callout callout--note">
+<span class="callout__icon">ℹ️</span>
+<div>
+<strong>Integration debugging order</strong>
+<p>For any sync issue: (1) check the <strong>job log</strong> in the source system, (2) verify <strong>reference IDs</strong> match on both sides, (3) confirm <strong>data mapping</strong> for the failing field, (4) re-trigger the job, (5) verify end-to-end — not just job success.</p>
+
+</div>
+
+</aside>
+
+<h2 class="section-h" id="links">Per-Link Integration Guides</h2>
+
+<section class="process" id="shopify-techoms">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">1</span>Shopify → TechOMS</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Import DTC orders and product catalog from Shopify; write back fulfillments, tracking, and inventory.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<!-- <span>💼</span>Business Objective</div>
+
+<p>Maintain near-real-time parity between Shopify storefront and TechOMS for orders and available inventory.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-1.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 1" />
+  <figcaption>Diagram screenshot — add <code>integration-1.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Shopify</div>
+
+<span class="step-title">Order webhook fires</span>
+<div>orders/create, orders/updated events sent to TechOMS endpoint.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Recurring poll backup</span>
+<div>Every 10-15 min job catches missed webhooks.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">SKU mapping</span>
+<div>Shopify variant SKU → TechOMS product ID.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Outbound fulfillment</span>
+<div>On ship confirm, POST fulfillment with tracking to Shopify.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Inventory push</span>
+<div>ATS pushed to Shopify variant inventory on schedule.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Shopify order JSON</li>
+
+<li>Variant SKU</li>
+
+<li>Inventory location mapping</li>
+
+<li>API credentials</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS sales order</li>
+
+<li>Shopify fulfillment</li>
+
+<li>Shopify inventory levels</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>Unfulfilled</code>
+</td>
+<td>
+<code>Fulfilled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>New</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Webhook delivery success rate</li>
+
+<li>SKU 100% mapped</li>
+
+<li>Fulfillment within 30 min of ship</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify app credentials</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS Sales Channel config</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Webhook log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Fulfillment export job</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">401 Unauthorized on Shopify API</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Expired access token or revoked app permissions.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Test API call in TechOMS</li>
+
+<li>Check Shopify app install status</li>
+
+<li>Review OAuth scopes</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-authenticate connector; verify read_orders, write_fulfillments, read_inventory scopes.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Inventory push mismatch</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Multi-location mapping wrong or safety stock not configured.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare TechOMS ATS vs Shopify per variant</li>
+
+<li>Check location mapping table</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix location mapping; re-push inventory for affected variants.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L2: connector config</li>
+
+<li>Shopify admin: app permissions</li>
+
+<li>TechOMS vendor support</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Monitor webhook failure queue</li>
+
+<li>Use poll as safety net not primary</li>
+
+<li>Test new products before launch</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="rithum-techoms">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">2</span>Rithum → TechOMS</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Import retailer POs and return authorizations; export ASNs, invoices, inventory feeds, and status.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Meet retailer EDI SLAs and maintain compliant dropship operations across all trading partners.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--rithum">Rithum</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-2.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 2" />
+  <figcaption>Diagram screenshot — add <code>integration-2.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Rithum</div>
+
+<span class="step-title">850 PO inbound</span>
+<div>Retailer PO translated and available via API/EDI/SFTP.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Order import job</span>
+<div>Scheduled pull every 15-30 min per retailer.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">855 acknowledgment</span>
+<div>Accept/reject lines within retailer cancel-by window.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">856 on ship</span>
+<div>ASN with SSCC, tracking, qty shipped.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">846 inventory</span>
+<div>Scheduled ATS feed per retailer SKU mapping.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>EDI 850</li>
+
+<li>Retailer trading partner ID</li>
+
+<li>Retailer SKU cross-reference</li>
+
+<li>Routing guides</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS retailer orders</li>
+
+<li>EDI 855/856/810/846/870</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>
+<code>New PO</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>855 within SLA</li>
+
+<li>856 same-day as ship</li>
+
+<li>846 no rejections</li>
+
+<li>Retailer SKU map complete</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum trading partner config</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS Rithum channel</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>EDI transaction log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>856 sample</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">856 rejected — invalid SSCC</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Carton SSCC not generated per retailer UCC-128 spec.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare SSCC format to routing guide</li>
+
+<li>Check Logiwa ship confirm carton data</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Regenerate labels with correct SSCC; resubmit 856.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">850 import skipped</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Trading partner filter or retailer account inactive.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify PO in Rithum portal</li>
+
+<li>Check import filters</li>
+
+<li>Review job log</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix partner mapping; manual import; escalate cancel-by risk.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L2: EDI mapping</li>
+
+<li>Rithum support</li>
+
+<li>Retailer compliance team</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Maintain retailer profile doc per trading partner</li>
+
+<li>Test 856 in sandbox before go-live</li>
+
+<li>Daily 846 rejection report</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="techoms-logiwa">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">3</span>TechOMS → Logiwa</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Export fulfillment orders, purchase orders, and return expectations to Logiwa for warehouse execution.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Reliable, idempotent order transmission with correct client, warehouse, and SKU mapping.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-3.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 3" />
+  <figcaption>Diagram screenshot — add <code>integration-3.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Fulfillment channel export</span>
+<div>Released orders → Logiwa shipment orders via API.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Inbound export</span>
+<div>Approved POs → Logiwa expected receipts.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Return export</span>
+<div>Authorized RMAs → Logiwa expected returns.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Acknowledge</span>
+<div>Logiwa returns external ID stored in TechOMS.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Fulfillment orders</li>
+
+<li>POs</li>
+
+<li>RMAs</li>
+
+<li>Client ID mapping</li>
+
+<li>Warehouse mapping</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Logiwa shipment orders</li>
+
+<li>Expected receipts</li>
+
+<li>Expected returns</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Released</code>
+</td>
+<td>
+<code>Exported</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Open</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>External ID populated both sides</li>
+
+<li>No duplicate exports</li>
+
+<li>SKU exists in Logiwa for client</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Fulfillment channel config</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Export job log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Client/warehouse mapping table</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">API timeout on export</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Network issue or Logiwa rate limiting; order may have partially created.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check if order exists in Logiwa despite timeout</li>
+
+<li>Review API error response</li>
+
+<li>Check export job retry count</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Link existing Logiwa order if created; otherwise retry export; enable idempotency keys.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L2: fulfillment channel</li>
+
+<li>Logiwa API support</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Idempotent export by order reference</li>
+
+<li>Alert on 3+ consecutive export failures</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="logiwa-techoms">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">4</span>Logiwa → TechOMS</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Return ship confirmations, inventory snapshots, and receiving completions to TechOMS.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Close the fulfillment and inventory loops so channels receive tracking and accurate ATS.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-4.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 4" />
+  <figcaption>Diagram screenshot — add <code>integration-4.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Ship confirm event</span>
+<div>On ship: tracking, carrier, weight, cartons sent to TechOMS.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Inventory job</span>
+<div>Scheduled on-hand by SKU/warehouse every 15-30 min.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Receipt complete</span>
+<div>PO/RMA receipt triggers inbound confirmation.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Match and update</span>
+<div>Match by reference ID; update order status and ATS.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Ship confirm payload</li>
+
+<li>On-hand snapshot</li>
+
+<li>Receipt confirmations</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS shipped status</li>
+
+<li>Updated ATS</li>
+
+<li>PO/RMA received status</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>In Fulfillment</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Ship confirm within 15 min of Logiwa ship</li>
+
+<li>Inventory job success rate &gt; 99%</li>
+
+<li>Reference ID match rate</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Inbound connector config</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Ship confirm job log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Inventory sync job log</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Ship confirm reference not found</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Reference ID mismatch between export and confirm.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare TechOMS order ref vs Logiwa shipment ref</li>
+
+<li>Check for manual order creation</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix mapping; manually link and re-trigger confirm.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L2: inbound connector</li>
+
+<li>TechOMS + Logiwa vendor support</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Never change reference ID format without coordinated deploy</li>
+
+<li>Daily shipped-not-confirmed report</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="carrier-integrations">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">5</span>Carrier Integrations</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Generate shipping labels, obtain tracking numbers, and retrieve tracking events via carrier APIs through Logiwa.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Ship orders with correct service level, accurate postage, and valid tracking for all channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--carrier">Carrier</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-5.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 5" />
+  <figcaption>Diagram screenshot — add <code>integration-5.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Rate shop</span>
+<div>Request rates for service level, weight, zone.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Carrier</div>
+
+<span class="step-title">Label generation</span>
+<div>Return PDF/ZPL label and tracking number.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Ship confirm</span>
+<div>Tracking stored and sent to TechOMS.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Carrier</div>
+
+<span class="step-title">Tracking events</span>
+<div>Optional inbound tracking updates for delivery confirmation.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Ship-to address</li>
+
+<li>Package weight/dims</li>
+
+<li>Service level</li>
+
+<li>Carrier account credentials</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Shipping label</li>
+
+<li>Tracking number</li>
+
+<li>Postage cost</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Tracking scannable in carrier portal</li>
+
+<li>Service matches order requirement</li>
+
+<li>Address validated</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Carrier account config in Logiwa</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Label with tracking</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rate shop error message if failed</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Address validation failure</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Invalid postal code, residential/commercial mismatch, or PO box restriction.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Validate address in carrier portal</li>
+
+<li>Compare to order ship-to</li>
+
+<li>Check retailer address rules</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Correct address with customer; use approved service for PO boxes.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Warehouse supervisor</li>
+
+<li>L2: carrier account billing</li>
+
+<li>Carrier support</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Validate addresses at order import when possible</li>
+
+<li>Maintain backup carrier per client</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<h2 class="section-h" id="edi-flow">EDI Document Flow Overview</h2>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/integration-6.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="integration 6" />
+  <figcaption>Diagram screenshot — add <code>integration-6.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Code</th>
+<th>Document</th>
+<th>Direction</th>
+<th>Description</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>850</td>
+<td>Purchase Order</td>
+<td>Inbound</td>
+<td>Retailer order to supplier/CN. Creates sales order in TechOMS.</td>
+</tr>
+
+<tr>
+<td>855</td>
+<td>PO Acknowledgment</td>
+<td>Outbound</td>
+<td>Accept, reject, or change PO lines. Must meet cancel-by SLA.</td>
+</tr>
+
+<tr>
+<td>856</td>
+<td>Ship Notice / ASN</td>
+<td>Outbound</td>
+<td>Advance ship notice with tracking, carton SSCC, qty per line.</td>
+</tr>
+
+<tr>
+<td>810</td>
+<td>Invoice</td>
+<td>Outbound</td>
+<td>Bill retailer for shipped merchandise per trading agreement.</td>
+</tr>
+
+<tr>
+<td>846</td>
+<td>Inventory Advice</td>
+<td>Outbound</td>
+<td>Periodic available inventory feed to prevent overselling on retailer sites.</td>
+</tr>
+
+<tr>
+<td>870</td>
+<td>Order Status</td>
+<td>Both</td>
+<td>Status updates and cancellation requests/responses.</td>
+</tr>
+
+<tr>
+<td>940</td>
+<td>Warehouse Shipping Order</td>
+<td>Outbound</td>
+<td>Optional: OMS instructs WMS to fulfill (may be replaced by API).</td>
+</tr>
+
+<tr>
+<td>945</td>
+<td>Warehouse Shipping Advice</td>
+<td>Inbound</td>
+<td>Optional: WMS confirms shipment back to OMS (may be replaced by API).</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="data-mapping">Data Mapping Examples</h2>
+
+<article class="card">
+<h3 class="sub-h">Shopify → TechOMS (Order)</h3>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Source Field</th>
+<th>Target Field</th>
+<th>Notes</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>order.id</td>
+<td>channel_order_id</td>
+<td>Dedupe key</td>
+</tr>
+
+<tr>
+<td>line_items[].sku</td>
+<td>order_lines[].product_sku</td>
+<td>Must exist in product master</td>
+</tr>
+
+<tr>
+<td>shipping_address</td>
+<td>ship_to</td>
+<td>Validate postal code</td>
+</tr>
+
+<tr>
+<td>financial_status</td>
+<td>payment_status</td>
+<td>paid / authorized</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">TechOMS → Logiwa (Shipment Order)</h3>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Source Field</th>
+<th>Target Field</th>
+<th>Notes</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>fulfillment_order_id</td>
+<td>reference_number</td>
+<td>Primary match for ship confirm</td>
+</tr>
+
+<tr>
+<td>channel_po_number</td>
+<td>customer_po</td>
+<td>Retailer reference on packing slip</td>
+</tr>
+
+<tr>
+<td>lines[].sku</td>
+<td>lines[].product_code</td>
+<td>Logiwa client SKU</td>
+</tr>
+
+<tr>
+<td>ship_method</td>
+<td>carrier_service</td>
+<td>Must map to Logiwa carrier setup</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">Logiwa → TechOMS (Ship Confirm)</h3>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Source Field</th>
+<th>Target Field</th>
+<th>Notes</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>tracking_number</td>
+<td>tracking_number</td>
+<td>Per carton or master</td>
+</tr>
+
+<tr>
+<td>carrier_code</td>
+<td>carrier</td>
+<td>SCAC or carrier name</td>
+</tr>
+
+<tr>
+<td>shipped_date</td>
+<td>ship_date</td>
+<td>UTC vs local — document timezone</td>
+</tr>
+
+<tr>
+<td>reference_number</td>
+<td>fulfillment_order_id</td>
+<td>Must match export</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h">TechOMS → Rithum (856 ASN)</h3>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Source Field</th>
+<th>Target Field</th>
+<th>Notes</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>retailer_po</td>
+<td>PO_number</td>
+<td>Original 850 reference</td>
+</tr>
+
+<tr>
+<td>tracking_number</td>
+<td>carrier_tracking</td>
+<td>Required for compliance</td>
+</tr>
+
+<tr>
+<td>sscc</td>
+<td>carton_sscc</td>
+<td>UCC-128 per retailer spec</td>
+</tr>
+
+<tr>
+<td>shipped_qty</td>
+<td>ship_qty</td>
+<td>Per line; partial ships create multiple 856s</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</article>
+
+<h2 class="section-h" id="sync-schedules">Sync Schedules</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Integration</th>
+<th>Frequency</th>
+<th>Direction</th>
+<th>Critical</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Shopify → TechOMS (orders)</td>
+<td>Webhook + 10-15 min poll</td>
+<td>Inbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Shopify (fulfillment)</td>
+<td>On ship confirm + 15 min retry</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Shopify (inventory)</td>
+<td>Every 15-30 min</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Rithum → TechOMS (850)</td>
+<td>Every 15-30 min</td>
+<td>Inbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Rithum (855)</td>
+<td>On import + hourly retry</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Rithum (856)</td>
+<td>On ship confirm</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Rithum (846)</td>
+<td>Every 30-60 min</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Logiwa (orders)</td>
+<td>Every 5-15 min</td>
+<td>Outbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Logiwa → TechOMS (ship confirm)</td>
+<td>Near real-time + 15 min retry</td>
+<td>Inbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Logiwa → TechOMS (inventory)</td>
+<td>Every 15-30 min</td>
+<td>Inbound</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>TechOMS → Logiwa (PO)</td>
+<td>On PO approval</td>
+<td>Outbound</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>Carrier tracking events</td>
+<td>Every 1-4 hours</td>
+<td>Inbound</td>
+<td>No</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="error-handling">Error Handling Process</h2>
+
+<ol class="clean">
+<li>Detect: Job failure alert, support ticket, or daily health report identifies error.</li>
+
+<li>Classify: Transient (timeout, rate limit) vs Config (mapping, credentials) vs Data (bad SKU, address).</li>
+
+<li>Contain: If oversell risk, pause channel inventory feed. If ship delay risk, notify warehouse.</li>
+
+<li>Diagnose: Check job log, API response, and both sides of the transaction.</li>
+
+<li>Resolve: Fix root cause, re-trigger job, verify success.</li>
+
+<li>Verify: Confirm end-to-end (e.g. tracking in Shopify, not just job green).</li>
+
+<li>Document: Update runbook if new error pattern; add to troubleshooting matrix.</li>
+
+</ol>
+
+<aside class="callout callout--warning">
+<span class="callout__icon">⚠️</span>
+<div>
+<strong>Retry policy</strong>
+<p>Transient errors: 3 retries with exponential backoff (1m, 5m, 15m). Config errors: no auto-retry — alert L2 immediately.</p>
+
+</div>
+
+</aside>
+
+<h2 class="section-h" id="monitoring">Monitoring &amp; Alert Recommendations</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Alert Condition</th>
+<th>Severity</th>
+<th>Recommended Action</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Order import job failed 3x consecutively</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+<td>Page L2; check API credentials and connector status</td>
+</tr>
+
+<tr>
+<td>Shipped in Logiwa, not confirmed in TechOMS &gt; 1 hour</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+<td>Run ship confirm sync; check reference mapping</td>
+</tr>
+
+<tr>
+<td>ATS vs Logiwa variance &gt; 5 units on any A SKU</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+<td>Pause channel feed; start reconciliation</td>
+</tr>
+
+<tr>
+<td>856 ASN rejected by Rithum</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+<td>EDI team review; resubmit before retailer deadline</td>
+</tr>
+
+<tr>
+<td>846 inventory feed rejected</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+<td>Fix SKU mapping; resend; monitor oversell risk</td>
+</tr>
+
+<tr>
+<td>Orders On Hold &gt; 4 hours</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+<td>Review hold reasons; release or escalate to client</td>
+</tr>
+
+<tr>
+<td>Inventory sync job &gt; 2x normal interval</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+<td>Check job queue; verify no backlog</td>
+</tr>
+
+<tr>
+<td>Export to Logiwa failure rate &gt; 2%</td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+<td>Check SKU mapping and API health</td>
+</tr>
+
+<tr>
+<td>Webhook delivery failure (Shopify)</td>
+<td>
+<span class="tag tag--low">Low</span>
+</td>
+<td>Verify poll catches orders; fix webhook endpoint</td>
+</tr>
+
+<tr>
+<td>PO export failed</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+<td>Receiving may be blind; fix before next inbound shipment</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<aside class="callout callout--tip">
+<span class="callout__icon">✅</span>
+<div>
+<strong>Build vs buy monitoring</strong>
+<p>At minimum, use scheduled reports from TechOMS job logs plus a daily spreadsheet comparing Logiwa shipped vs TechOMS confirmed. Graduate to automated alerts (PagerDuty, Slack webhook) for the High-severity items above.</p>
+
+</div>
+
+</aside>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script> -->
+</body>
+</html>

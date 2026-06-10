@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Glossary — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Glossary | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="glossary">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Glossary</span>
+</nav>
+
+<h1 class="page-title">Warehouse Systems Glossary</h1>
+
+<p class="page-lead">Plain-language definitions of WMS, OMS, EDI, and CN terms used across TechOMS, Logiwa, Rithum, and Shopify operations.</p>
+
+</header>
+
+<input type="search" id="glossary-filter" class="glossary-search" placeholder="Search terms…" aria-label="Search glossary" />
+<nav class="toc" aria-label="Jump to letter">
+<!-- <a href="#letter-3">3</a>
+<a href="#letter-8">8</a>
+<a href="#letter-9">9</a>
+<a href="#letter-A">A</a>
+<a href="#letter-B">B</a>
+<a href="#letter-C">C</a>
+<a href="#letter-D">D</a>
+<a href="#letter-E">E</a>
+<a href="#letter-F">F</a>
+<a href="#letter-I">I</a>
+<a href="#letter-L">L</a>
+<a href="#letter-M">M</a>
+<a href="#letter-O">O</a>
+<a href="#letter-P">P</a>
+<a href="#letter-Q">Q</a>
+<a href="#letter-R">R</a>
+<a href="#letter-S">S</a>
+<a href="#letter-T">T</a>
+<a href="#letter-U">U</a>
+<a href="#letter-W">W</a> -->
+</nav>
+
+<div id="glossary-content">
+<section id="letter-3">
+<h2 class="section-h">3</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="cn">
+<dt>CN</dt>
+
+<dd>Third-Party Logistics provider. A company that handles warehousing, fulfillment, and shipping on behalf of brands/clients.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-8">
+<h2 class="section-h">8</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="810">
+<dt>810</dt>
+
+<dd>EDI Invoice. Bills the retailer for shipped merchandise.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="846">
+<dt>846</dt>
+
+<dd>EDI Inventory Advice. Periodic inventory availability feed to retailers/marketplaces.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="850">
+<dt>850</dt>
+
+<dd>EDI Purchase Order. Retailer order sent to supplier/CN. Creates a sales order in TechOMS.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="855">
+<dt>855</dt>
+
+<dd>EDI PO Acknowledgment. Response accepting, rejecting, or changing PO lines.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="856">
+<dt>856</dt>
+
+<dd>EDI Advance Ship Notice (ASN). Notifies retailer of shipment with tracking and carton details.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="870">
+<dt>870</dt>
+
+<dd>EDI Order Status. Status updates and cancellation requests/responses.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-9">
+<h2 class="section-h">9</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="940">
+<dt>940</dt>
+
+<dd>EDI Warehouse Shipping Order. Optional document instructing WMS to fulfill (often replaced by API).</dd>
+
+</div>
+
+<div class="glossary-item" data-term="945">
+<dt>945</dt>
+
+<dd>EDI Warehouse Shipping Advice. Optional WMS ship confirmation back to OMS (often replaced by API).</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-A">
+<h2 class="section-h">A</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="allocation">
+<dt>Allocation</dt>
+
+<dd>Reserving specific inventory (location + qty) against a shipment order for picking.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="asn">
+<dt>ASN</dt>
+
+<dd>Advance Ship Notice. Same as EDI 856. Critical for retailer compliance.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="ats">
+<dt>ATS</dt>
+
+<dd>Available-to-Sell. Quantity that can be sold on channels. Typically on-hand minus reservations, safety stock, and holds.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-B">
+<h2 class="section-h">B</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="backorder">
+<dt>Backorder</dt>
+
+<dd>Order line accepted but cannot ship until inventory is available.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="blind ship">
+<dt>Blind Ship</dt>
+
+<dd>Shipment where retailer branding is used but CN fulfills. Common in dropship.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="bol">
+<dt>BOL</dt>
+
+<dd>Bill of Lading. Shipping document for freight/LTL inbound shipments.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-C">
+<h2 class="section-h">C</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="cancel-by">
+<dt>Cancel-By</dt>
+
+<dd>Retailer deadline to accept or reject a PO. Missing this may auto-cancel the order.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="chargeback">
+<dt>Chargeback</dt>
+
+<dd>Financial penalty from retailer for compliance failure (late ship, missing ASN, etc.).</dd>
+
+</div>
+
+<div class="glossary-item" data-term="cycle count">
+<dt>Cycle Count</dt>
+
+<dd>Periodic physical count of inventory in specific locations to verify system accuracy.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-D">
+<h2 class="section-h">D</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="dropship">
+<dt>Dropship</dt>
+
+<dd>Fulfillment model where the CN ships directly to the end consumer on behalf of a retailer.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="dtc">
+<dt>DTC</dt>
+
+<dd>Direct-to-Consumer. Sales through brand-owned channels like Shopify, not through retailers.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-E">
+<h2 class="section-h">E</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="edi">
+<dt>EDI</dt>
+
+<dd>Electronic Data Interchange. Standardized business documents (850, 856, etc.) exchanged between trading partners.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-F">
+<h2 class="section-h">F</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="fefo">
+<dt>FEFO</dt>
+
+<dd>First Expired, First Out. Allocation strategy for products with expiry dates.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="fifo">
+<dt>FIFO</dt>
+
+<dd>First In, First Out. Allocation strategy shipping oldest inventory first.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="fulfillment channel">
+<dt>Fulfillment Channel</dt>
+
+<dd>TechOMS configuration linking to a WMS (Logiwa) for order export and ship confirm.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-I">
+<h2 class="section-h">I</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="integratedflow">
+<dt>IntegratedFlow</dt>
+
+<dd>TechOMS connector framework for API integrations between systems.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-L">
+<h2 class="section-h">L</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="ltl">
+<dt>LTL</dt>
+
+<dd>Less Than Truckload. Freight shipping for palletized inbound shipments.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-M">
+<h2 class="section-h">M</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="multi-client">
+<dt>Multi-Client</dt>
+
+<dd>Logiwa capability to segregate inventory and operations by client/brand in one warehouse.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-O">
+<h2 class="section-h">O</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="oms">
+<dt>OMS</dt>
+
+<dd>Order Management System. Orchestrates orders across sales channels and fulfillment locations. TechOMS is our OMS.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="on-hand">
+<dt>On-Hand</dt>
+
+<dd>Physical inventory quantity in the warehouse. Logiwa is the system of record for on-hand.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="oversell">
+<dt>Oversell</dt>
+
+<dd>Selling more units than physically available. Usually caused by inventory sync lag.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-P">
+<h2 class="section-h">P</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="pick task">
+<dt>Pick Task</dt>
+
+<dd>Directed instruction to retrieve specific SKU/qty from a specific location.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="po">
+<dt>PO</dt>
+
+<dd>Purchase Order. Inbound order to vendor for replenishment stock.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="putaway">
+<dt>Putaway</dt>
+
+<dd>Moving received inventory from staging to storage/pick locations.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-Q">
+<h2 class="section-h">Q</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="quarantine">
+<dt>Quarantine</dt>
+
+<dd>Non-pickable location for returns, damage, or holds pending inspection.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-R">
+<h2 class="section-h">R</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="reservation">
+<dt>Reservation</dt>
+
+<dd>Soft hold on inventory at OMS level to prevent overselling before WMS hard allocation.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="rma">
+<dt>RMA</dt>
+
+<dd>Return Merchandise Authorization. Approved return record linking to original order.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="routing guide">
+<dt>Routing Guide</dt>
+
+<dd>Retailer-specific rules for carriers, labels, packaging, and ASN format.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-S">
+<h2 class="section-h">S</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="safety stock">
+<dt>Safety Stock</dt>
+
+<dd>Buffer quantity withheld from channel ATS to prevent overselling during sync lag.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="sales channel">
+<dt>Sales Channel</dt>
+
+<dd>TechOMS configuration linking to a demand source (Shopify, Rithum).</dd>
+
+</div>
+
+<div class="glossary-item" data-term="scac">
+<dt>SCAC</dt>
+
+<dd>Standard Carrier Alpha Code. 2-4 letter carrier identifier used in EDI (e.g. UPS, FDXE).</dd>
+
+</div>
+
+<div class="glossary-item" data-term="ship-by">
+<dt>Ship-By</dt>
+
+<dd>Date by which order must ship to meet retailer SLA.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="short ship">
+<dt>Short Ship</dt>
+
+<dd>Shipping fewer units than ordered. Requires approval and status update on remaining qty.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="sku">
+<dt>SKU</dt>
+
+<dd>Stock Keeping Unit. Unique identifier for a product variant used across all systems.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="sla">
+<dt>SLA</dt>
+
+<dd>Service Level Agreement. Contracted timeframes for ship, ack, ASN, etc.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="sscc">
+<dt>SSCC</dt>
+
+<dd>Serial Shipping Container Code. 18-digit barcode on cartons (UCC-128) required by many retailers.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-T">
+<h2 class="section-h">T</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="trading partner">
+<dt>Trading Partner</dt>
+
+<dd>A retailer or marketplace connected via EDI/Rithum with unique ID and requirements.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-U">
+<h2 class="section-h">U</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="ucc-128">
+<dt>UCC-128</dt>
+
+<dd>Barcode label standard for retail cartons and pallets. Required on ASN.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="upc">
+<dt>UPC</dt>
+
+<dd>Universal Product Code. Barcode on product packaging; may differ from internal SKU.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+<section id="letter-W">
+<h2 class="section-h">W</h2>
+
+<dl class="glossary-list">
+<div class="glossary-item" data-term="wave">
+<dt>Wave</dt>
+
+<dd>Group of shipment orders released together for picking in the warehouse.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="wismo">
+<dt>WISMO</dt>
+
+<dd>Where Is My Order. Customer inquiry about order status — usually needs tracking lookup.</dd>
+
+</div>
+
+<div class="glossary-item" data-term="wms">
+<dt>WMS</dt>
+
+<dd>Warehouse Management System. Manages physical inventory and warehouse operations. Logiwa is our WMS.</dd>
+
+</div>
+
+</dl>
+
+</section>
+
+</div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/glossary.js"></script>
+</body>
+</html>
