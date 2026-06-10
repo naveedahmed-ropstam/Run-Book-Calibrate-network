@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Home — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Home | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+</head>
+
+<body data-page="home">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-group">
+          <div class="nav-group__label">Overview</div>
+          <a href="index.html" class="nav-link active">
+            <span class="nav-link__icon" aria-hidden="true">⌂</span>
+            <span>Home</span>
+          </a>
+          <a href="pages/architecture.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">▦</span>
+            <span>System Architecture</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Operational Flows</div>
+          <a href="pages/sales-order.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🛒</span>
+            <span>Sales Order Flow</span>
+          </a>
+          <a href="pages/purchase-order.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📦</span>
+            <span>Purchase Order Flow</span>
+          </a>
+          <a href="pages/returns.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">↩</span>
+            <span>Return / RMA Flow</span>
+          </a>
+          <a href="pages/inventory.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📊</span>
+            <span>Inventory Flow</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Integration</div>
+          <a href="pages/integration.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🔗</span>
+            <span>Integration Guide</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Support & Reference</div>
+          <a href="pages/troubleshooting.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🔍</span>
+            <span>Troubleshooting Matrix</span>
+          </a>
+          <a href="pages/onboarding.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🎓</span>
+            <span>Onboarding Guide</span>
+          </a>
+          <a href="pages/critical-screens.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🖥</span>
+            <span>Critical Screens</span>
+          </a>
+          <a href="pages/glossary.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📖</span>
+            <span>Glossary</span>
+          </a>
+          <a href="pages/doc-structure.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🗂</span>
+            <span>Documentation Structure</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme"
+          title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+        <section class="hero">
+          <h1>Calibrate Networks Operations &amp; Troubleshooting Handbook</h1>
+
+          <p>The single source of truth for our fulfillment stack: TechOMS (Order Management), Logiwa (Warehouse
+            Management), Rithum (retailer / channel &amp; EDI), and Shopify. Use this handbook to understand the
+            business, trace data across systems, identify failures, and perform first-level troubleshooting
+            independently.</p>
+
+        </section>
+
+        <aside class="callout callout--note">
+          <span class="callout__icon">ℹ️</span>
+          <div>
+            <strong>New here? Start with these three pages.</strong>
+            <p>1) <a href="pages/architecture.html">System Architecture</a> to see the big picture, 2) <a
+                href="pages/sales-order.html">Sales Order Flow</a> to learn the most common process, then 3) <a
+                href="pages/onboarding.html">Onboarding Guide</a> for your ramp plan. Press <code>Ctrl K</code> any time
+              to search.</p>
+
+          </div>
+
+        </aside>
+
+        <div class="home-grid">
+          <a href="pages/calibrate-networks.html" class="home-card">
+            <div class="home-card__icon">🗂</div>
+
+            <div class="home-card__title">Calibrate Networks</div>
+
+            <div class="home-card__desc">Recommended page tree, ownership and review cadence for Calibrate Networks.</div>
+
+          </a>
+
+
+          <a href="pages/architecture.html" class="home-card">
+            <div class="home-card__icon">▦</div>
+
+            <div class="home-card__title">System Architecture</div>
+
+            <div class="home-card__desc">How Shopify, Rithum, TechOMS, Logiwa and carriers connect, plus each system’s
+              responsibilities and sync points.</div>
+
+          </a>
+          <a href="pages/sales-order.html" class="home-card">
+            <div class="home-card__icon">🛒</div>
+
+            <div class="home-card__title">Sales Order Flow</div>
+
+            <div class="home-card__desc">End-to-end order lifecycle from channel capture through pick/pack/ship and
+              tracking, with troubleshooting.</div>
+
+          </a>
+          <a href="pages/purchase-order.html" class="home-card">
+            <div class="home-card__icon">📦</div>
+
+            <div class="home-card__title">Purchase Order Flow</div>
+
+            <div class="home-card__desc">PO creation, vendor shipment, Logiwa receiving, inventory update and PO
+              completion, plus receiving issues.</div>
+
+          </a>
+          <a href="pages/returns.html" class="home-card">
+            <div class="home-card__icon">↩</div>
+
+            <div class="home-card__title">Return / RMA Flow</div>
+
+            <div class="home-card__desc">Return initiation, authorization, warehouse receiving, inspection, adjustment,
+              refund and status sync.</div>
+
+          </a>
+          <a href="pages/inventory.html" class="home-card">
+            <div class="home-card__icon">📊</div>
+
+            <div class="home-card__title">Inventory Flow</div>
+
+            <div class="home-card__desc">Receiving, allocation, reservation, adjustment, cross-system sync,
+              reconciliation and cycle counts.</div>
+
+          </a>
+          <a href="pages/integration.html" class="home-card">
+            <div class="home-card__icon">🔗</div>
+
+            <div class="home-card__title">Integration Guide</div>
+
+            <div class="home-card__desc">Per-link integration details, EDI document flow, data mapping, sync schedules,
+              error handling and alerting.</div>
+
+          </a>
+          <a href="pages/troubleshooting.html" class="home-card">
+            <div class="home-card__icon">🔍</div>
+
+            <div class="home-card__title">Troubleshooting Matrix</div>
+
+            <div class="home-card__desc">Searchable symptom → system → root cause → first-level fix → escalation
+              reference.</div>
+
+          </a>
+          <a href="pages/onboarding.html" class="home-card">
+            <div class="home-card__icon">🎓</div>
+
+            <div class="home-card__title">Onboarding Guide</div>
+
+            <div class="home-card__desc">Week-by-week ramp plan, access checklist, ownership map and daily monitoring
+              routine for new hires.</div>
+
+          </a>
+          <a href="pages/critical-screens.html" class="home-card">
+            <div class="home-card__icon">🖥</div>
+
+            <div class="home-card__title">Critical Screens</div>
+
+            <div class="home-card__desc">The TechOMS, Logiwa and Rithum screens every support analyst must know and what
+              each is used for.</div>
+
+          </a>
+          <a href="pages/glossary.html" class="home-card">
+            <div class="home-card__icon">📖</div>
+
+            <div class="home-card__title">Glossary</div>
+
+            <div class="home-card__desc">WMS, OMS, EDI and CN terminology defined in plain language for new team
+              members.</div>
+
+          </a>
+          <a href="pages/doc-structure.html" class="home-card">
+            <div class="home-card__icon">🗂</div>
+
+            <div class="home-card__title">Documentation Structure</div>
+
+            <div class="home-card__desc">Recommended page tree, ownership and review cadence for Confluence, Notion,
+              SharePoint or Google Docs.</div>
+
+          </a>
+          <!--  -->
+
+        </div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input"
+          placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/search-index.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+
+</html>

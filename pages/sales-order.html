@@ -1,0 +1,2617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sales Order Flow + Troubleshooting — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Sales Order Flow + Troubleshooting | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="sales-order">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Sales Order Flow</span>
+</nav>
+
+<h1 class="page-title">Sales Order Flow + Troubleshooting</h1>
+
+<p class="page-lead">End-to-end order lifecycle from customer checkout or retailer PO through TechOMS orchestration, Logiwa fulfillment, carrier shipment, and status/tracking writeback to all channels.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#customer-order-creation">Customer Order Creation (Shopify DTC)</a>
+<a href="#channel-order-import">Sales Channel Order Import (Rithum / Retailer)</a>
+<a href="#techoms-processing">Order Processing in TechOMS</a>
+<a href="#export-to-logiwa">Order Export to Logiwa</a>
+<a href="#pick-pack-ship">Pick, Pack &amp; Ship (Logiwa)</a>
+<a href="#tracking-update">Tracking Update Flow</a>
+<a href="#order-status-sync">Order Status Updates &amp; Synchronization</a>
+</nav>
+
+</header>
+
+<aside class="callout callout--tip">
+<span class="callout__icon">✅</span>
+<div>
+<strong>Golden rule for order issues</strong>
+<p>Always trace the order forward in time: Channel → TechOMS → Logiwa → Carrier → back to Channel. The first system where the order stops progressing is where you investigate.</p>
+
+</div>
+
+</aside>
+<!-- 
+<p class="text-muted">This section covers seven interconnected processes. Each follows the standard handbook template so you can jump directly to the step, validation point, or error you need.</p>
+
+<section class="process" id="customer-order-creation">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">1</span>Customer Order Creation (Shopify DTC)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Capture a direct-to-consumer (DTC) order when a shopper completes checkout on the Shopify storefront, making it available for fulfillment orchestration.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Convert a paid customer order into a fulfillable sales order in TechOMS without delay, with accurate line items, shipping address, and payment status so the warehouse can ship same-day or next-day per SLA.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-shopify.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order shopify" />
+  <figcaption>Diagram screenshot — add <code>sales-order-shopify.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Customer</div>
+
+<span class="step-title">Complete checkout</span>
+<div>Customer selects products, enters ship-to address, chooses shipping method, and completes payment (or places a valid authorized order).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Shopify</div>
+
+<span class="step-title">Order created in Shopify Admin</span>
+<div>Shopify assigns an order number, reserves inventory at the channel level (if configured), and sets financial status (paid/authorized) and fulfillment status (unfulfilled).</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Order imported via connector</span>
+<div>TechOMS receives the order through webhook and/or recurring Sales Channel import job. The connector maps Shopify order ID, line SKUs, quantities, discounts, taxes, and shipping address into a TechOMS sales order.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Initial validation &amp; routing prep</span>
+<div>TechOMS validates SKU mapping, address completeness, and fraud/hold rules. Order may enter On Hold, Pending Allocation, or move toward fulfillment routing.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Shopify order ID and order name (#1001)</li>
+
+<li>Customer name, email, phone</li>
+
+<li>Ship-to and bill-to addresses</li>
+
+<li>Line items: SKU, quantity, price, discounts</li>
+
+<li>Shipping method / service level requested</li>
+
+<li>Payment status (paid, authorized, pending)</li>
+
+<li>Order tags and notes</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS sales order with channel reference</li>
+
+<li>Mapped internal SKU / product IDs</li>
+
+<li>Order status in TechOMS (e.g. New, On Hold, Pending Fulfillment)</li>
+
+<li>Audit log of import timestamp and source channel</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Unfulfilled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>New / Imported</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>New</code>
+</td>
+<td>
+<code>Pending Fulfillment (if passed validation)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Shopify order exists and financial status is acceptable (paid or authorized per policy)</li>
+
+<li>Every line SKU maps to an active product in TechOMS</li>
+
+<li>Ship-to address passes validation (no missing postal code / country)</li>
+
+<li>TechOMS order channel reference matches Shopify order ID (dedupe check)</li>
+
+<li>No duplicate import for the same Shopify order ID</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify Admin → Orders → [order] — order header, financial status, fulfillment status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify Admin → Orders → [order] — line items and shipping address</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Sales Orders → search by Shopify order ID — imported order header</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Sales Channel → Shopify connector → recent import log / job history</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Order in Shopify but not in TechOMS</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Webhook failure, connector disabled, API credential expired, or import job not running.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Confirm order exists in Shopify with correct financial status</li>
+
+<li>Check TechOMS Sales Channel connector status (active / last sync time)</li>
+
+<li>Review recurring import job execution log for errors</li>
+
+<li>Search TechOMS by Shopify order ID and external reference fields</li>
+
+<li>Verify webhook delivery in Shopify (if applicable)</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-run manual import for the order date range; fix API credentials; re-enable connector; trigger on-demand sync. Document incident if SLA breach.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">SKU mapping failure on import</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Shopify variant SKU does not match TechOMS product SKU or alias mapping table.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare Shopify line SKU to TechOMS product master</li>
+
+<li>Check SKU alias / cross-reference mapping in TechOMS</li>
+
+<li>Review import error message on the order or job log</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Add or correct SKU mapping in TechOMS product catalog; re-import order or manually add line and release hold.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1 Support: verify Shopify order + TechOMS import logs, re-trigger sync</li>
+
+<li>L2 Operations: SKU mapping, order rules, channel connector config</li>
+
+<li>L3 / TechOMS Admin: API credentials, connector code, custom IntegratedFlow issues</li>
+
+<li>Client / Brand team: if product catalog or Shopify catalog mismatch</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Always search TechOMS by external channel order ID first — not internal TechOMS ID</li>
+
+<li>Capture screenshots of both Shopify and TechOMS side-by-side for ticket documentation</li>
+
+<li>Monitor import job success rate daily; alert on consecutive failures</li>
+
+<li>Maintain a SKU mapping change log when new products launch</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="channel-order-import">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">2</span>Sales Channel Order Import (Rithum / Retailer)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Import retailer and marketplace purchase orders (typically EDI 850) from Rithum into TechOMS as fulfillable sales orders.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Meet retailer cancel-by and ship-by SLAs by converting inbound retailer POs into warehouse-ready fulfillment orders within the required acknowledgment window.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--rithum">Rithum</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--techoms">Retailers</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-rithum.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order rithum" />
+  <figcaption>Diagram screenshot — add <code>sales-order-rithum.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Retailer</div>
+
+<span class="step-title">Retailer transmits PO (850)</span>
+<div>A marketplace or dropship retailer sends an EDI 850 or equivalent PO through their integration hub.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Rithum</div>
+
+<span class="step-title">PO received and normalized</span>
+<div>Rithum translates EDI, validates retailer-specific requirements (routing, labels, ASN timing), and exposes the order in the channel portal or outbound feed.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Order imported into TechOMS</span>
+<div>TechOMS Sales Channel connector (Rithum/Dsco API, EDI, or Data Mapper) pulls new orders on schedule. Retailer PO number, ship-to (often blind ship), line items, and requested ship date are mapped.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">855 acknowledgment sent back</span>
+<div>If configured, TechOMS or Rithum sends EDI 855 PO acknowledgment confirming acceptance, partial acceptance, or rejection within retailer SLA (often 2–24 hours).</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>EDI 850: retailer PO number, order date, requested ship date</li>
+
+<li>Ship-to address (may be retailer DC or end consumer for dropship)</li>
+
+<li>Line items: retailer SKU, vendor SKU, quantity, unit price</li>
+
+<li>Retailer routing / department / store number</li>
+
+<li>Special instructions (gift wrap, routing guide, label requirements)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS sales order with retailer PO reference</li>
+
+<li>EDI 855 PO acknowledgment (accepted/rejected lines)</li>
+
+<li>Order status visible in Rithum portal</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>
+<code>New PO</code>
+</td>
+<td>
+<code>Accepted / In Progress</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>New (Retailer Channel)</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>New</code>
+</td>
+<td>
+<code>Acknowledged / Pending Fulfillment</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Retailer PO number is unique — no duplicate import</li>
+
+<li>All retailer SKUs map to internal product SKUs</li>
+
+<li>Ship-by / cancel-by dates are feasible against inventory and cut-off times</li>
+
+<li>855 acknowledgment sent within retailer SLA</li>
+
+<li>Routing and label requirements noted on the order for warehouse</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum portal → Orders → PO detail (status, ship-by, line items)</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Sales Orders → search by retailer PO number</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Sales Channel → Rithum connector → import job log</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>EDI transaction log (850 inbound / 855 outbound) if available</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Retailer PO in Rithum but missing in TechOMS</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Import job failure, mapping filter excluding order, or wrong retailer account.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Locate PO in Rithum by retailer PO number</li>
+
+<li>Check TechOMS import job last run and error log</li>
+
+<li>Verify retailer account / trading partner ID mapping</li>
+
+<li>Search TechOMS external reference fields</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix connector config, run manual import for date range, verify trading partner mapping. Escalate if cancel-by SLA at risk.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">855 not sent / late acknowledgment</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Order on hold in TechOMS, connector not configured for 855, or inventory rejection.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check TechOMS order hold reason</li>
+
+<li>Verify 855 outbound job in Rithum/TechOMS</li>
+
+<li>Confirm inventory was available at ack time</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Release hold, manually trigger 855, or send rejection with reason per retailer requirements.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: Rithum PO lookup + TechOMS import re-trigger</li>
+
+<li>L2: EDI mapping, retailer account setup, acknowledgment config</li>
+
+<li>Rithum / EDI team: translation errors, trading partner onboarding</li>
+
+<li>Retailer compliance team: SLA exceptions, routing guide issues</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Know each retailer's cancel-by and ship-by rules — document in client profile</li>
+
+<li>Flag orders with ship-by within 24 hours for priority monitoring</li>
+
+<li>Keep retailer SKU cross-reference table current</li>
+
+<li>Validate blind-ship addresses carefully — bad addresses cause chargebacks</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="techoms-processing">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">3</span>Order Processing in TechOMS</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Apply business rules, inventory checks, and fulfillment routing so approved orders are ready for warehouse dispatch.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Ensure every order is validated, allocated at the OMS level, routed to the correct warehouse and fulfillment channel, and released without violating client or retailer business rules.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-techoms.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order techoms" />
+  <figcaption>Diagram screenshot — add <code>sales-order-techoms.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Order rules evaluation</span>
+<div>Rules engine evaluates channel, SKU, destination, order value, and tags. May apply holds, split orders, select carrier service, or route to specific warehouse.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Inventory check (ATS)</span>
+<div>TechOMS checks available-to-sell inventory aggregated from Logiwa (and any other sources). May soft-allocate or flag backorder per client policy.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Fulfillment routing</span>
+<div>Dynamic routing selects fulfillment channel (Logiwa warehouse), ship method, and priority. Retailer orders may require specific carrier or routing guide compliance.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Release for fulfillment</span>
+<div>Order status moves to Released / Pending Export. Recurring job or real-time trigger will push to Logiwa fulfillment channel.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Imported sales order with channel reference</li>
+
+<li>Product master and SKU mappings</li>
+
+<li>Inventory ATS from Logiwa sync</li>
+
+<li>Order rules configuration</li>
+
+<li>Client SLA and routing preferences</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Released fulfillment order ready for Logiwa export</li>
+
+<li>Soft allocation / reservation at OMS level (if enabled)</li>
+
+<li>Hold reason codes for blocked orders</li>
+
+<li>Audit trail of rules applied</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>New</code>
+</td>
+<td>
+<code>On Hold</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>New</code>
+</td>
+<td>
+<code>Pending Fulfillment</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Pending Fulfillment</code>
+</td>
+<td>
+<code>Released</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Released</code>
+</td>
+<td>
+<code>Exported to WMS</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>No unexplained hold — hold reason documented</li>
+
+<li>ATS covers order quantity (or backorder policy applied)</li>
+
+<li>Correct warehouse / fulfillment channel selected</li>
+
+<li>Ship method matches channel requirements (retailer routing guide)</li>
+
+<li>Order released before warehouse cut-off for same-day ship</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Sales Order detail — status, hold reason, line allocation</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Order Rules — active rules affecting this order</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Inventory view — ATS for order SKUs</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Fulfillment Channel assignment</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Order stuck On Hold</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Fraud rule, incomplete address, payment issue (DTC), manual hold, or missing custom field.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Read hold reason on order header</li>
+
+<li>Review order history / audit log</li>
+
+<li>Check if all required custom fields populated (retailer orders)</li>
+
+<li>Verify payment status for Shopify orders</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Resolve root cause and manually release hold, or cancel/reject per client policy.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Wrong warehouse routed</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Routing rule misconfiguration or inventory snapshot stale.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Review routing rule that matched</li>
+
+<li>Compare inventory by warehouse in TechOMS vs Logiwa</li>
+
+<li>Check if order was manually reassigned</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Reassign fulfillment channel, update routing rules, refresh inventory sync.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: identify hold reason, check inventory ATS</li>
+
+<li>L2: order rules, routing config, fulfillment channel assignment</li>
+
+<li>Client operations manager: policy decisions on backorders and splits</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Document every manual hold release with reason in order notes</li>
+
+<li>Review orders On Hold &gt; 2 hours daily</li>
+
+<li>Test routing rule changes in staging before production</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="export-to-logiwa">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">4</span>Order Export to Logiwa</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Transmit released fulfillment orders from TechOMS to Logiwa so the warehouse can allocate, pick, pack, and ship.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Achieve reliable, timely order transmission with zero data loss so warehouse operations can begin within minutes of OMS release.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-logiwa-export.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order logiwa export" />
+  <figcaption>Diagram screenshot — add <code>sales-order-logiwa-export.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Export job picks released orders</span>
+<div>Recurring IntegratedFlow / fulfillment channel job selects orders in Released status and maps to Logiwa shipment order format.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Shipment order created</span>
+<div>Logiwa receives order with client ID, warehouse, ship-to, lines, carrier service, and reference numbers (TechOMS ID, channel PO). Order enters Open / Ready to Process.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Export confirmation</span>
+<div>TechOMS stores Logiwa shipment order ID, updates status to Exported / In Fulfillment, and links external reference for ship confirm matching.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Released TechOMS fulfillment order</li>
+
+<li>Ship-to address and contact</li>
+
+<li>Line items: SKU, quantity, lot/serial requirements</li>
+
+<li>Carrier / service level</li>
+
+<li>Client and warehouse identifiers</li>
+
+<li>Channel reference numbers (Shopify order ID, retailer PO)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Logiwa shipment order</li>
+
+<li>Logiwa shipment order ID stored in TechOMS</li>
+
+<li>TechOMS status: Exported / In Fulfillment</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Released</code>
+</td>
+<td>
+<code>Exported</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Open / Pending</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Open</code>
+</td>
+<td>
+<code>Allocated (after allocation run)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Logiwa shipment order exists with matching reference numbers</li>
+
+<li>Line quantities match TechOMS exactly</li>
+
+<li>Client / warehouse on Logiwa order is correct</li>
+
+<li>TechOMS shows Logiwa external ID — not blank</li>
+
+<li>No export error in TechOMS job log</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Fulfillment export job log (success/fail)</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Order — Logiwa external reference field</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Shipment Orders → search by reference / order number</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Shipment Order detail — lines, ship-to, status</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Order released in TechOMS but not in Logiwa</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Export job failure, API timeout, SKU not in Logiwa catalog, or client/warehouse mismatch.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check TechOMS fulfillment channel export job log</li>
+
+<li>Search Logiwa by TechOMS order reference and channel PO</li>
+
+<li>Verify SKU exists in Logiwa product master for correct client</li>
+
+<li>Confirm fulfillment channel mapping (warehouse, client ID)</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix mapping error, re-run export job, or manually create shipment order in Logiwa (with approval) and link references.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Duplicate shipment orders in Logiwa</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Re-export after partial failure without idempotency check.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Search Logiwa for duplicate references</li>
+
+<li>Review TechOMS export history for multiple success events</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Cancel duplicate in Logiwa before pick starts; fix connector dedupe; document for warehouse.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: job log review, reference search in both systems</li>
+
+<li>L2: fulfillment channel connector config, SKU/client mapping</li>
+
+<li>Logiwa admin: API integration errors, product setup</li>
+
+<li>TechOMS vendor support: IntegratedFlow connector defects</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Never manually create Logiwa orders without linking TechOMS reference</li>
+
+<li>Monitor export job error rate; page on 3+ consecutive failures</li>
+
+<li>Validate new SKUs exist in Logiwa before launching sales</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="pick-pack-ship">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">5</span>Pick, Pack &amp; Ship (Logiwa)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Physically fulfill the order in the warehouse: allocate inventory, pick items, pack cartons, generate carrier labels, and ship.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Ship the correct products in the correct quantities to the correct address using the correct carrier service, meeting retailer packaging/label requirements and same-day cut-off SLAs.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--carrier">Carrier</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-pick-pack-ship.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order pick pack ship" />
+  <figcaption>Diagram screenshot — add <code>sales-order-pick-pack-ship.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Inventory allocation</span>
+<div>System reserves specific inventory (location, lot if applicable) against the shipment order. Fails if insufficient stock or blocked locations.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Wave release and picking</span>
+<div>Orders grouped into waves by priority, carrier cut-off, or retailer. Picker uses mobile/web UI to confirm picks from directed locations.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Packing</span>
+<div>Items scanned and packed per client requirements (dunnage, retailer-specific packing slip, UCC-128 labels for retail).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa + Carrier</div>
+
+<span class="step-title">Label generation and ship confirm</span>
+<div>Carrier API returns label and tracking number. Ship confirm closes the shipment order and decrements on-hand inventory.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Allocated shipment order with pick tasks</li>
+
+<li>Inventory locations and on-hand quantities</li>
+
+<li>Carrier account and service mapping</li>
+
+<li>Package dimensions and weight (actual or default)</li>
+
+<li>Retailer label / packing slip templates</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Picked and packed shipment</li>
+
+<li>Carrier label (PDF/ZPL)</li>
+
+<li>Tracking number(s)</li>
+
+<li>Ship confirm event (ready for TechOMS sync)</li>
+
+<li>Updated on-hand inventory</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Open</code>
+</td>
+<td>
+<code>Allocated</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Allocated</code>
+</td>
+<td>
+<code>Picking</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Picking</code>
+</td>
+<td>
+<code>Packed</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Packed</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Allocation successful — no short allocation without approval</li>
+
+<li>All lines picked — scan confirms SKU and quantity</li>
+
+<li>Carrier service matches order requirement (especially retailer routing)</li>
+
+<li>Tracking number generated before carrier cut-off</li>
+
+<li>Ship confirm timestamp recorded in Logiwa</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Shipment Order — status timeline</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Allocation detail — locations reserved</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Pack/ship screen — tracking number and carrier</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Physical label and packing slip (photo for retailer compliance disputes)</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Cannot allocate — insufficient inventory</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>On-hand mismatch, inventory in hold/quarantine location, or oversell due to sync lag.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check on-hand by SKU in Logiwa</li>
+
+<li>Look for inventory in non-pickable locations</li>
+
+<li>Compare TechOMS ATS vs Logiwa on-hand</li>
+
+<li>Check for unshipped orders consuming allocation</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Adjust inventory after root-cause analysis, transfer from alternate location, short-ship with client approval, or cancel line.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Carrier label failure</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Invalid address, carrier account issue, overweight/oversize, or service not available to zone.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Validate ship-to address in Logiwa</li>
+
+<li>Check carrier API error message</li>
+
+<li>Verify package weight/dimensions</li>
+
+<li>Confirm carrier account credentials active</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Correct address, change service level, update carrier credentials, or use backup carrier per client policy.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: check allocation and shipment order status in Logiwa</li>
+
+<li>Warehouse supervisor: pick/pack issues, short picks, label problems</li>
+
+<li>L2: inventory sync, carrier account config</li>
+
+<li>Client: short-ship approval, carrier service exceptions</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Prioritize waves by carrier cut-off times</li>
+
+<li>Retail orders: verify UCC-128 and packing slip before seal</li>
+
+<li>Never ship without scan confirmation on all lines</li>
+
+<li>Report allocation failures immediately — may indicate sync issue</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="tracking-update">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">6</span>Tracking Update Flow</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Return shipment tracking numbers and carrier details from Logiwa through TechOMS to Shopify and Rithum so customers and retailers receive tracking information.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Close the fulfillment loop with accurate, timely tracking writeback to prevent WISMO inquiries, retailer compliance penalties, and chargebacks for missing tracking.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-tracking.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order tracking" />
+  <figcaption>Diagram screenshot — add <code>sales-order-tracking.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Ship confirm transmitted</span>
+<div>On ship confirm, Logiwa sends tracking number, carrier, ship date, weight, and carton count to TechOMS via fulfillment channel connector.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Order matched and closed</span>
+<div>TechOMS matches ship confirm to original order by reference ID. Order status updates to Shipped / Complete. Partial ships handled per policy.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Shopify fulfillment writeback</span>
+<div>For DTC orders, TechOMS creates fulfillment in Shopify with tracking number and notifies customer (if configured).</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS / Rithum</div>
+
+<span class="step-title">Retailer ASN and tracking</span>
+<div>For retailer orders, ship confirm triggers 856 ASN generation through Rithum with tracking and carton SSCC data per retailer spec.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Logiwa ship confirm payload</li>
+
+<li>Tracking number(s) and carrier code</li>
+
+<li>Ship date and ship-from location</li>
+
+<li>Carton SSCC / UCC-128 (retail)</li>
+
+<li>Original order references</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS order status: Shipped</li>
+
+<li>Shopify fulfillment with tracking URL</li>
+
+<li>EDI 856 ASN to retailer (via Rithum)</li>
+
+<li>Customer tracking notification (DTC)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Packed</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>In Fulfillment</code>
+</td>
+<td>
+<code>Shipped</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>Unfulfilled</code>
+</td>
+<td>
+<code>Fulfilled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>
+<code>In Progress</code>
+</td>
+<td>
+<code>Shipped / ASN Sent</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Tracking number in Logiwa matches carrier portal</li>
+
+<li>TechOMS order shows Shipped with tracking populated</li>
+
+<li>Shopify fulfillment created with correct tracking (DTC)</li>
+
+<li>856 ASN transmitted within retailer deadline</li>
+
+<li>Tracking is scannable / valid (not test label)</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Shipped order — tracking and ship date</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Order — ship confirm received, tracking field</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify → Order fulfillment section with tracking</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum → ASN / ship confirm status for retailer PO</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Shipped in Logiwa but not in TechOMS</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Ship confirm sync job failure, reference mismatch, or connector down.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify ship confirm in Logiwa shipment history</li>
+
+<li>Check TechOMS inbound fulfillment job log</li>
+
+<li>Compare reference IDs on both sides</li>
+
+<li>Look for partial ship handling errors</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-trigger ship confirm sync; manually enter tracking in TechOMS if urgent; fix reference mapping.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Tracking in TechOMS but not in Shopify</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Shopify fulfillment writeback job failure or API scope issue.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check TechOMS → Shopify outbound job log</li>
+
+<li>Verify Shopify API permissions for fulfillments</li>
+
+<li>Confirm order not already fulfilled in Shopify</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-run fulfillment export; manually fulfill in Shopify with tracking as temporary fix.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Late or missing 856 ASN</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>ASN job delay, missing SSCC, retailer mapping error, or ship confirm not triggering ASN.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check Rithum ASN queue for retailer PO</li>
+
+<li>Verify SSCC / carton data in Logiwa ship confirm</li>
+
+<li>Review retailer ASN timing requirements</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Manually trigger ASN in Rithum; correct carton data; escalate to EDI team if recurring.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: verify tracking in Logiwa, re-trigger sync jobs</li>
+
+<li>L2: connector config, reference mapping, ASN rules</li>
+
+<li>EDI / Rithum team: 856 generation failures</li>
+
+<li>Retailer compliance: ASN disputes and chargebacks</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Verify tracking in carrier portal before closing ticket</li>
+
+<li>Monitor ship-confirm-to-Shopify latency (target &lt; 30 min)</li>
+
+<li>Retail: send ASN same day as ship — many retailers penalize next-day ASN</li>
+
+<li>Keep a daily report of shipped-not-synced orders</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="order-status-sync">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">7</span>Order Status Updates &amp; Synchronization</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Keep order status consistent across TechOMS, Logiwa, Shopify, and Rithum throughout the lifecycle including holds, cancellations, and partial shipments.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Provide a single accurate status view for support, clients, and retailers; prevent duplicate shipments and unauthorized cancellations.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/sales-order-status-sync.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="sales order status sync" />
+  <figcaption>Diagram screenshot — add <code>sales-order-status-sync.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Status hub maintains canonical state</span>
+<div>TechOMS is the system of record for order status across channels. Changes from any direction update TechOMS first (or simultaneously per connector design).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Channel</div>
+
+<span class="step-title">Cancellation requests (870 / API)</span>
+<div>Retailer cancel requests arrive via Rithum (EDI 870) or Shopify cancel API. TechOMS evaluates if cancel is possible (not yet shipped).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Warehouse status events</span>
+<div>Pick started, packed, shipped, cancelled in Logiwa sync back to TechOMS. If shipped, cancel is rejected upstream.</div>
+
+</li>
+
+<li>
+<div class="step-actor">All channels</div>
+
+<span class="step-title">Status propagation</span>
+<div>Final status (cancelled, shipped, partial) written to Shopify, Rithum, and internal reporting.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Status change events from all systems</li>
+
+<li>Cancel requests with reason codes</li>
+
+<li>Partial shipment line details</li>
+
+<li>Delivery confirmation (optional, from carrier)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Unified order status in TechOMS</li>
+
+<li>Channel-specific status updates</li>
+
+<li>EDI 870 cancellation responses</li>
+
+<li>Customer-facing status (Shopify)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Pending Fulfillment</code>
+</td>
+<td>
+<code>Cancelled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Allocated</code>
+</td>
+<td>
+<code>Cancelled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>Unfulfilled</code>
+</td>
+<td>
+<code>Cancelled</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>
+<code>Open</code>
+</td>
+<td>
+<code>Cancelled (870)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Status in TechOMS matches warehouse reality (not shipped if marked pending)</li>
+
+<li>Cancellations propagated to Logiwa before pick starts</li>
+
+<li>Partial ship: remaining lines correctly backordered or cancelled</li>
+
+<li>No orphaned shipment orders in Logiwa for cancelled TechOMS orders</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Order history / audit trail</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Shipment order status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify → Order timeline</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum → Order status for retailer PO</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Cancel failed — already shipped</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Cancel request arrived after ship confirm; sync delay masked true status.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check Logiwa ship confirm timestamp vs cancel request time</li>
+
+<li>Verify tracking already transmitted</li>
+
+<li>Review status sync lag</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Reject cancel with reason; initiate return process if customer insists; notify retailer per policy.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Status mismatch between systems</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>One-direction sync failure or manual override in one system only.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare status in all four systems side-by-side</li>
+
+<li>Check last sync job times for each connector direction</li>
+
+<li>Look for manual edits in order history</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-sync from source of truth (Logiwa for ship status, TechOMS for cancel decisions); document manual correction.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: status comparison across systems, re-trigger sync</li>
+
+<li>L2: connector bidirectional sync config</li>
+
+<li>Warehouse: physical verification if system says not shipped but customer claims received</li>
+
+<li>Client: cancel/backorder policy decisions</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>TechOMS order history is your audit trail — always check it first</li>
+
+<li>Never cancel in Logiwa alone without updating TechOMS</li>
+
+<li>Document partial shipments with line-level detail</li>
+
+<li>Run daily cancelled-but-still-allocated report</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script> -->
+</body>
+</html>

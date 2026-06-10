@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Documentation Structure — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Documentation Structure | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="doc-structure">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Documentation Structure</span>
+</nav>
+
+<h1 class="page-title">Recommended Documentation Structure</h1>
+
+<p class="page-lead">How to maintain operational documentation in Confluence, Notion, SharePoint, or Google Docs — page tree, ownership, review cadence, and sync with this handbook.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#principles">Principles</a>
+<a href="#tree">Page Tree</a>
+<a href="#platforms">Platform Guides</a>
+<a href="#ownership">Ownership</a>
+<a href="#review">Review Cadence</a>
+</nav>
+
+</header>
+
+
+<h2 class="section-h" id="tree">Recommended Page Tree</h2>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">1. Home / Start Here</h3>
+
+<ul class="clean">
+<li>Handbook home </li>
+
+<li>New employee onboarding checklist</li>
+
+<li>Who to contact / escalation matrix</li>
+
+<li>Glossary (link or embed)</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">2. System Architecture</h3>
+
+<ul class="clean">
+<li>Architecture diagram (Mermaid or Lucidchart)</li>
+
+<li>System responsibilities matrix</li>
+
+<li>Integration touchpoints table</li>
+
+<li>Environment list (prod, staging, sandboxes)</li>
+
+<li>Credential ownership (no secrets — reference vault location)</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">3. Operational Flows</h3>
+
+<ul class="clean">
+<li>Sales Order Flow (with sub-pages per process step)</li>
+
+<li>Purchase Order Flow</li>
+
+<li>Return / RMA Flow</li>
+
+<li>Inventory Flow</li>
+
+<li>Per-client SLA appendix</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">4. Integration Guide</h3>
+
+<ul class="clean">
+<li>Shopify → TechOMS</li>
+
+<li>Rithum → TechOMS</li>
+
+<li>TechOMS → Logiwa</li>
+
+<li>Logiwa → TechOMS</li>
+
+<li>Carrier integrations</li>
+
+<li>EDI document reference</li>
+
+<li>Data mapping tables (per client)</li>
+
+<li>Sync schedules and job names</li>
+
+<li>Error handling runbook</li>
+
+<li>Monitoring and alerts</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">5. Troubleshooting &amp; Support</h3>
+
+<ul class="clean">
+<li>Troubleshooting matrix (searchable table)</li>
+
+<li>Common errors FAQ</li>
+
+<li>Screenshot capture guide</li>
+
+<li>Ticket documentation standards</li>
+
+<li>P1 incident response procedure</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">6. Client Profiles</h3>
+
+<ul class="clean">
+<li>Per-client overview (channels, warehouses, SLAs)</li>
+
+<li>Retailer routing guides (per trading partner)</li>
+
+<li>SKU mapping change log</li>
+
+<li>Custom order rules documentation</li>
+
+<li>Client-specific contacts</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">7. Critical Screens</h3>
+
+<ul class="clean">
+<li>TechOMS screen guide (with annotated screenshots)</li>
+
+<li>Logiwa screen guide</li>
+
+<li>Rithum screen guide</li>
+
+<li>Shopify admin guide (DTC clients)</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">8. Change Log &amp; Archive</h3>
+
+<ul class="clean">
+<li>Documentation change log</li>
+
+<li>Deprecated processes (with sunset date)</li>
+
+<li>Post-incident reviews (PIRs)</li>
+
+<li>Release notes impact on operations</li>
+
+</ul>
+
+</article>
+
+<h2 class="section-h" id="platforms">Platform-Specific Guidance</h2>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Confluence</h3>
+
+<ul class="clean">
+<li>Use a top-level space &quot;CN Operations&quot; with the page tree above as child pages.</li>
+
+<li>Create templates for Process Page (17-section structure) and Incident PIR.</li>
+
+<li>Use labels: order, inventory, integration, client-[name], edi.</li>
+
+<li>Embed Mermaid via plugin or attach exported PNG diagrams.</li>
+
+<li>Link Jira tickets to relevant runbook pages.</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Notion</h3>
+
+<ul class="clean">
+<li>Use a database for Troubleshooting Matrix with filterable columns.</li>
+
+<li>Process docs as templated pages with toggle headings per section.</li>
+
+<li>Gallery view for Critical Screens with screenshots.</li>
+
+<li>Sync block or embed link to this React handbook for interactive diagrams.</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">SharePoint</h3>
+
+<ul class="clean">
+<li>Document library per section with metadata: Owner, ReviewDate, System.</li>
+
+<li>Use SharePoint search with managed properties for quick lookup.</li>
+
+<li>Version history enabled on all runbooks.</li>
+
+<li>Co-authoring for team updates; restrict client-profile edits to owners.</li>
+
+</ul>
+
+</article>
+
+<article class="card">
+<h3 class="sub-h" style="margin-top:0">Google Docs / Drive</h3>
+
+<ul class="clean">
+<li>Folder structure mirrors page tree exactly.</li>
+
+<li>One Google Sheet for Troubleshooting Matrix (filterable).</li>
+
+<li>Use Google Sites or a linked React app for navigation shell.</li>
+
+<li>Comment-based review workflow with assigned reviewers.</li>
+
+</ul>
+
+</article>
+
+<aside class="callout callout--note">
+<span class="callout__icon">ℹ️</span>
+<div>
+<strong>This HTML handbook</strong>
+<p>This static site can serve as the interactive layer (diagrams, search, consistent templates). Export to PDF periodically for offline access, or embed via iframe in Confluence/Notion. Keep content updated in the React app source and re-run the HTML generator when needed.</p>
+
+</div>
+
+</aside>
+
+<h2 class="section-h" id="ownership">Documentation Ownership</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Handbook Owner (Ops Manager)</td>
+<td>Overall structure, review cadence, approves major changes</td>
+</tr>
+
+<tr>
+<td>Integration Doc Owner (L2 Lead)</td>
+<td>Integration guide, sync schedules, mapping tables</td>
+</tr>
+
+<tr>
+<td>Warehouse Doc Owner (WH Manager)</td>
+<td>Pick/pack/ship, receiving, cycle count sections</td>
+</tr>
+
+<tr>
+<td>EDI Doc Owner (Channel Manager)</td>
+<td>Rithum screens, EDI docs, retailer profiles</td>
+</tr>
+
+<tr>
+<td>Client Profile Owners (Account Managers)</td>
+<td>Per-client SLA, routing, contacts</td>
+</tr>
+
+<tr>
+<td>All Support Analysts</td>
+<td>Suggest updates from tickets; add matrix entries</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="review">Review Cadence</h2>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>Document</th>
+<th>Frequency</th>
+<th>Also Review When</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>Troubleshooting matrix</td>
+<td>Monthly</td>
+<td>Also after every P1 incident</td>
+</tr>
+
+<tr>
+<td>Integration / sync schedules</td>
+<td>Quarterly</td>
+<td>After connector upgrades</td>
+</tr>
+
+<tr>
+<td>Critical screens (screenshots)</td>
+<td>Quarterly</td>
+<td>After UI release from any vendor</td>
+</tr>
+
+<tr>
+<td>Client profiles / retailer routing</td>
+<td>Per retailer onboarding</td>
+<td>When routing guide changes</td>
+</tr>
+
+<tr>
+<td>Process flows (order, PO, RMA, inventory)</td>
+<td>Semi-annual</td>
+<td>After workflow changes</td>
+</tr>
+
+<tr>
+<td>Onboarding guide</td>
+<td>Semi-annual</td>
+<td>After org or tool changes</td>
+</tr>
+
+<tr>
+<td>Glossary</td>
+<td>Annual</td>
+<td>When new terms introduced</td>
+</tr>
+
+<tr>
+<td>Architecture diagram</td>
+<td>Annual</td>
+<td>When systems added/removed</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Purchase Order Flow + Troubleshooting — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Purchase Order Flow + Troubleshooting | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="purchase-order">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Purchase Order Flow</span>
+</nav>
+
+<h1 class="page-title">Purchase Order Flow + Troubleshooting</h1>
+
+<p class="page-lead">Inbound supply chain from PO creation through vendor shipment, Logiwa receiving, inventory update, and PO completion — including common receiving issues and discrepancy handling.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#po-creation">Purchase Order Creation</a>
+<a href="#vendor-shipment">Vendor Shipment Process</a>
+<a href="#logiwa-receiving">Receiving Workflow in Logiwa</a>
+<a href="#inventory-update">Inventory Update Process (Post-Receiving)</a>
+<a href="#po-completion">PO Completion Process</a>
+<a href="#receiving-issues">Common Receiving Issues &amp; Debugging Checklist</a>
+</nav>
+
+</header>
+
+<aside class="callout callout--note">
+<span class="callout__icon">ℹ️</span>
+<div>
+<strong>Inventory truth starts at receiving</strong>
+<p>Until product is received in Logiwa, it does not exist as sellable inventory. PO issues often surface later as oversells or allocation failures — trace back to receiving.</p>
+
+</div>
+
+</aside>
+
+<section class="process" id="po-creation">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">1</span>Purchase Order Creation</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Create a purchase order in TechOMS to instruct a vendor to ship inbound inventory to the warehouse.</p>
+<!-- 
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Ensure the warehouse knows what to expect, when, and from whom — enabling accurate receiving, putaway, and timely inventory availability on sales channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-1.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 1" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-1.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Operations / Client</div>
+
+<span class="step-title">Identify replenishment need</span>
+<div>Based on min/max levels, open sales demand, or client request, determine SKUs and quantities to order from vendor.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Create and approve PO</span>
+<div>PO created with vendor, ship-to warehouse, expected arrival date, line items (SKU, qty, cost). Approved PO becomes eligible for WMS export.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Logiwa</div>
+
+<span class="step-title">PO exported to Logiwa</span>
+<div>Fulfillment channel or inbound connector creates expected receipt / ASN in Logiwa so receiving team can plan dock appointments.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Vendor ID and contact</li>
+
+<li>Ship-to warehouse</li>
+
+<li>SKU, ordered quantity, unit cost</li>
+
+<li>Expected delivery date</li>
+
+<li>PO number (internal or vendor reference)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Approved TechOMS purchase order</li>
+
+<li>Logiwa expected receipt / inbound shipment</li>
+
+<li>Receiving plan for warehouse</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Draft</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Draft</code>
+</td>
+<td>
+<code>Approved</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Approved</code>
+</td>
+<td>
+<code>Exported</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Expected / Open</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Vendor and SKU are active and mapped in both systems</li>
+
+<li>Ship-to warehouse is correct</li>
+
+<li>PO exported to Logiwa with matching line quantities</li>
+
+<li>Expected date is communicated to warehouse</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Purchase Orders → PO header and lines</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Expected Receipts → matching PO reference</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Export job log for PO transmission</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">PO approved in TechOMS but not in Logiwa</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Inbound export job failure or SKU not in Logiwa product master.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check TechOMS PO export job log</li>
+
+<li>Search Logiwa expected receipts by PO number</li>
+
+<li>Verify SKU exists for client in Logiwa</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Fix SKU setup, re-run export, or manually create expected receipt in Logiwa with approval.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: verify PO in both systems, re-trigger export</li>
+
+<li>L2: inbound connector config, vendor/SKU mapping</li>
+
+<li>Client / procurement: vendor confirmation and date changes</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Send PO confirmation to vendor with warehouse address and receiving hours</li>
+
+<li>Use consistent PO numbering across TechOMS and Logiwa</li>
+
+<li>Update expected date if vendor delays shipment</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="vendor-shipment">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">2</span>Vendor Shipment Process</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Track the physical movement of goods from vendor to warehouse between PO approval and dock arrival.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Give receiving team visibility into inbound shipments so they can staff the dock, prioritize ASNs, and detect late or short shipments early.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">Vendor</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-2.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 2" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-2.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Vendor</div>
+
+<span class="step-title">Vendor ships goods</span>
+<div>Vendor picks per PO, generates packing list and optional ASN with carton contents, and ships to warehouse address on PO.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS / Logiwa</div>
+
+<span class="step-title">ASN update (if provided)</span>
+<div>Vendor ASN may update expected quantities, lot numbers, or arrival date in TechOMS/Logiwa before physical receipt.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Inbound arrival</span>
+<div>Truck arrives at dock. Receiving team matches packing list / BOL to open expected receipt in Logiwa.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Vendor packing list / BOL</li>
+
+<li>Carrier tracking (if parcel)</li>
+
+<li>ASN with carton-level detail (if EDI/API)</li>
+
+<li>PO reference number</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Updated expected receipt in Logiwa</li>
+
+<li>Dock appointment / receiving queue entry</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Expected</code>
+</td>
+<td>
+<code>In Transit / Arrived</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Shipment references correct PO number</li>
+
+<li>Carton count matches ASN (if provided)</li>
+
+<li>No unexpected SKU on packing list without PO amendment</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Vendor packing list or ASN document</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa expected receipt — open status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>BOL / carrier tracking (if applicable)</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Shipment arrived with no matching PO</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>PO not created, wrong reference on BOL, or wrong client account.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Read BOL and packing list for PO/reference</li>
+
+<li>Search TechOMS and Logiwa for partial PO number match</li>
+
+<li>Contact vendor for PO confirmation</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Identify correct PO or create emergency PO with client approval; do not receive into wrong client account.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">ASN quantities differ from PO</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Vendor short-shipped or split shipment without notice.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare ASN lines to PO lines</li>
+
+<li>Check for partial shipment notation from vendor</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Receive actual quantities; update PO remaining qty; notify client of short ship.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Warehouse receiving lead: unidentified shipments</li>
+
+<li>Client / procurement: vendor communication</li>
+
+<li>L2: ASN integration issues</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Require vendors to put PO number on every carton label</li>
+
+<li>Log carrier tracking for inbound LTL/parcel</li>
+
+<li>Flag overdue expected receipts daily</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="logiwa-receiving">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">3</span>Receiving Workflow in Logiwa</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Receive inbound inventory at the warehouse dock, verify quantities and condition, and stage for putaway.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Accurately record what physically arrived so on-hand inventory reflects reality and sellable stock is available after putaway and sync.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-3.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 3" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-3.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Open expected receipt</span>
+<div>Receiving clerk opens the matching expected receipt in Logiwa mobile or web receiving module.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Scan and count</span>
+<div>Scan UPC/SKU barcodes, enter or confirm quantities per line. Note lot, expiry, or serial if tracked.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Record discrepancies</span>
+<div>Over, short, or damaged quantities recorded with reason codes and photos per client policy.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Complete receiving transaction</span>
+<div>Receiving closes the receipt line; inventory moves to staging location pending putaway.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Expected receipt / PO reference</li>
+
+<li>Physical cartons and SKU barcodes</li>
+
+<li>Lot / expiry (if applicable)</li>
+
+<li>Packing list quantities</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Received quantities per line</li>
+
+<li>Discrepancy records (over/short/damage)</li>
+
+<li>Staging location inventory</li>
+
+<li>Receiving timestamp and user</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Expected</code>
+</td>
+<td>
+<code>Receiving</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Receiving</code>
+</td>
+<td>
+<code>Received (staging)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Every line on packing list accounted for (received, short, or over with reason)</li>
+
+<li>SKU scans match expected SKU — no look-alike substitutions</li>
+
+<li>Damaged units segregated — not put into pickable inventory</li>
+
+<li>Lot/expiry captured for tracked products</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Receiving session — lines and quantities</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Discrepancy report if applicable</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Photos of damage or label issues</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Physical packing list annotated with counts</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Cannot scan SKU during receiving</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Product not in Logiwa catalog, barcode mismatch, or wrong client.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Search product master by SKU and UPC</li>
+
+<li>Verify client on expected receipt</li>
+
+<li>Check if SKU needs to be created or alias added</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Add product or barcode alias; never receive to unmapped SKU without approval.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Received qty locked — cannot edit</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Receipt already completed and putaway started.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check receipt status and putaway tasks</li>
+
+<li>Review who completed receiving</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Use inventory adjustment workflow for corrections; document with supervisor approval.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Receiving supervisor: discrepancies and damage</li>
+
+<li>L2: product catalog / barcode setup</li>
+
+<li>Client: damage claims and vendor chargebacks</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Count cartons before opening — compare to BOL</li>
+
+<li>Never skip discrepancy entry — it prevents silent inventory drift</li>
+
+<li>Segregate damaged goods immediately</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-update">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">4</span>Inventory Update Process (Post-Receiving)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Move received inventory from staging to pickable locations and sync updated on-hand counts to TechOMS and sales channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Make newly received stock available for allocation and prevent overselling by publishing accurate ATS to Shopify and Rithum.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-4.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 4" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-4.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Directed putaway</span>
+<div>Logiwa assigns optimal storage location. Worker scans location and product to confirm putaway.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">On-hand increment</span>
+<div>Inventory in pickable location increases available on-hand for that SKU/client.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa → TechOMS</div>
+
+<span class="step-title">Inventory sync upward</span>
+<div>Scheduled job pushes on-hand / available snapshots to TechOMS.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Channels</div>
+
+<span class="step-title">Channel inventory publish</span>
+<div>TechOMS recalculates ATS and pushes to Shopify and Rithum (846) so channels reflect new stock.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Received staging inventory</li>
+
+<li>Putaway rules and location capacity</li>
+
+<li>Current channel ATS settings</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Pickable on-hand in Logiwa</li>
+
+<li>Updated ATS in TechOMS</li>
+
+<li>Channel inventory feeds updated</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Staging</code>
+</td>
+<td>
+<code>Available (pickable)</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>ATS previous</code>
+</td>
+<td>
+<code>ATS increased</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Putaway complete — no inventory left in staging past SLA</li>
+
+<li>Logiwa on-hand increased by received qty (minus damage)</li>
+
+<li>TechOMS ATS updated within sync window (typically 15–30 min)</li>
+
+<li>Shopify/Rithum show increased availability</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Inventory by location — SKU qty in pickable bin</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Putaway task completion</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → Inventory — ATS for received SKUs</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify admin inventory or Rithum 846 log</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Received in Logiwa but ATS not updated in TechOMS</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Inventory sync job delay or failure; inventory in non-reporting location.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Confirm putaway to pickable location type</li>
+
+<li>Check Logiwa → TechOMS inventory job log</li>
+
+<li>Compare on-hand Logiwa vs TechOMS for SKU</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Complete putaway, re-run inventory sync, verify location included in feed.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: compare on-hand Logiwa vs TechOMS</li>
+
+<li>L2: inventory sync connector, location type config</li>
+
+<li>Warehouse: incomplete putaway</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Set SLA for putaway completion (e.g. same day as receipt)</li>
+
+<li>After large receipts, verify channel inventory before marketing pushes</li>
+
+<li>Run post-receipt reconciliation for high-value SKUs</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="po-completion">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">5</span>PO Completion Process</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Close the purchase order lifecycle when all goods are received (or exceptions documented) and inventory is available.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Provide a clean audit trail for procurement, billing, and client reporting — confirming the PO is fulfilled or formally closed with discrepancies.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-5.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 5" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-5.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Receipt lines closed</span>
+<div>All expected receipt lines show received qty matching or explaining variance vs PO.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">PO status updated</span>
+<div>PO moves to Complete, Partially Received, or Closed with Discrepancy. Remaining open qty zeroed or backordered.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Operations</div>
+
+<span class="step-title">Client notification and reporting</span>
+<div>Receiving report sent to client with any shorts/damage. Vendor chargeback initiated if applicable.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Received quantities per PO line</li>
+
+<li>Discrepancy documentation</li>
+
+<li>Client approval for close with variance</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Closed PO in TechOMS</li>
+
+<li>Closed expected receipt in Logiwa</li>
+
+<li>Receiving summary report</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Received</code>
+</td>
+<td>
+<code>Closed</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Exported</code>
+</td>
+<td>
+<code>Complete / Closed</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Received qty + documented shorts = ordered qty (or PO formally amended)</li>
+
+<li>No open expected receipt lines lingering</li>
+
+<li>Inventory sync confirmed after final putaway</li>
+
+<li>Client notified of discrepancies within SLA</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → PO — final status and received qty per line</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Expected receipt — closed status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Discrepancy / receiving report sent to client</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">PO stuck open with zero remaining but not closable</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Partial line not zeroed, system rounding, or unreceived ghost line.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Compare PO lines to all receipt transactions</li>
+
+<li>Check for duplicate receipt sessions</li>
+
+<li>Review open qty calculation</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Adjust line quantities with approval, force close with documented reason.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: line-level PO vs receipt comparison</li>
+
+<li>L2: PO workflow config</li>
+
+<li>Client: approve close with variance</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Close POs within 48 hours of final receipt</li>
+
+<li>Never leave orphaned open POs — they skew replenishment reports</li>
+
+<li>Attach photos to discrepancy records</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="receiving-issues">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">6</span>Common Receiving Issues &amp; Debugging Checklist</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Provide a structured approach to diagnose and resolve the most frequent inbound/receiving problems.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Reduce dock-to-stock time and prevent receiving errors from propagating into channel oversells and allocation failures.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">Vendor</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/purchase-order-6.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="purchase order 6" />
+  <figcaption>Diagram screenshot — add <code>purchase-order-6.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Identify issue category</span>
+<div>Classify as: missing PO, SKU/barcode, quantity discrepancy, damage, putaway delay, or inventory sync.</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Walk the debugging checklist</span>
+<div>Follow decision tree from PO existence through channel ATS confirmation.</div>
+
+</li>
+
+<li>
+<div class="step-actor">L1 Support</div>
+
+<span class="step-title">Document and escalate if needed</span>
+<div>Capture screenshots at each checkpoint; escalate per path if unresolved in 30 min.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>PO number, SKU, reported issue description</li>
+
+<li>Packing list, photos, BOL</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Resolved receipt or formal discrepancy record</li>
+
+<li>Updated inventory and closed PO (or exception documented)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Checklist completed top-to-bottom — no skipped steps</li>
+
+<li>Root cause documented in ticket</li>
+
+<li>Client notified if discrepancy affects sellable inventory</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Each checkpoint in the decision tree where failure occurred</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Before/after inventory counts for the SKU</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Inventory discrepancy after receiving</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Wrong qty entered, duplicate scan, putaway to wrong location, or sync lag mistaken for loss.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Pull receiving transaction history for SKU</li>
+
+<li>Check putaway destination locations</li>
+
+<li>Compare Logiwa on-hand before and after receipt</li>
+
+<li>Verify no pending adjustment or cycle count</li>
+
+<li>Check TechOMS ATS sync timestamp</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Correct via approved adjustment; if physical loss, quarantine and cycle count location.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Duplicate receiving against same PO line</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Same shipment received twice or receipt not closed before second scan.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>List all receipt sessions for PO</li>
+
+<li>Compare timestamps and users</li>
+
+<li>Check on-hand spike</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Reverse duplicate receipt via adjustment; retrain on receipt close procedure.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Receiving supervisor: physical verification</li>
+
+<li>L2: product catalog, connector sync</li>
+
+<li>Client: vendor claims, damage reimbursement</li>
+
+<li>Inventory control: cycle count if unexplained variance &gt; threshold</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Use the debugging checklist in order — do not skip to adjustment</li>
+
+<li>For recurring vendor shorts, flag vendor scorecard</li>
+
+<li>Daily report: POs open &gt; 7 days past expected date</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script> -->
+</body>
+</html>

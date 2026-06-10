@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Return / RMA Flow + Troubleshooting — Calibrate Networks Operations & Troubleshooting Handbook" />
+  <title>Return / RMA Flow + Troubleshooting | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+</head>
+<body data-page="returns">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+    <div class="nav-group">
+      <div class="nav-group__label">Overview</div>
+      <a href="../index.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </a>
+      <a href="architecture.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">▦</span>
+        <span>System Architecture</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Operational Flows</div>
+      <a href="sales-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🛒</span>
+        <span>Sales Order Flow</span>
+      </a>
+      <a href="purchase-order.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📦</span>
+        <span>Purchase Order Flow</span>
+      </a>
+      <a href="returns.html" class="nav-link active">
+        <span class="nav-link__icon" aria-hidden="true">↩</span>
+        <span>Return / RMA Flow</span>
+      </a>
+      <a href="inventory.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📊</span>
+        <span>Inventory Flow</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Integration</div>
+      <a href="integration.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔗</span>
+        <span>Integration Guide</span>
+      </a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group__label">Support & Reference</div>
+      <a href="troubleshooting.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🔍</span>
+        <span>Troubleshooting Matrix</span>
+      </a>
+      <a href="onboarding.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🎓</span>
+        <span>Onboarding Guide</span>
+      </a>
+      <a href="critical-screens.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🖥</span>
+        <span>Critical Screens</span>
+      </a>
+      <a href="glossary.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">📖</span>
+        <span>Glossary</span>
+      </a>
+      <a href="doc-structure.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">🗂</span>
+        <span>Documentation Structure</span>
+      </a>
+    </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+<header>
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<span>Handbook</span>
+<span class="sep">/</span>
+<span>Return / RMA Flow</span>
+</nav>
+
+<h1 class="page-title">Return Order (RMA) Flow + Troubleshooting</h1>
+
+<p class="page-lead">End-to-end return lifecycle from initiation and authorization through warehouse receiving, inspection, inventory adjustment, refund, and cross-system status synchronization.</p>
+
+<nav class="toc" aria-label="On this page">
+<a href="#return-initiation">Return Initiation</a>
+<a href="#return-authorization">Return Authorization</a>
+<a href="#warehouse-return-receiving">Warehouse Return Receiving</a>
+<a href="#inspection-process">Inspection Process</a>
+<a href="#inventory-adjustment">Inventory Adjustment (Returns)</a>
+<a href="#refund-workflow">Refund Workflow</a>
+<a href="#return-status-sync">Return Status Synchronization</a>
+</nav>
+
+</header>
+
+<aside class="callout callout--warning">
+<span class="callout__icon">⚠️</span>
+<div>
+<strong>Returns touch every system</strong>
+<p>A return that is received in Logiwa but not synced back can leave the customer without a refund and the retailer without RMA closure. Always verify both physical receipt AND upstream status.</p>
+
+</div>
+
+</aside>
+
+<section class="process" id="return-initiation">
+<div class="process__head">
+<h2 class="process__title">
+<!-- <span class="process__num">1</span>Return Initiation</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Begin the return process when a customer or retailer requests to send product back — via Shopify return, Rithum RMA, or TechOMS manual entry.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Capture return intent with correct order reference, items, and reason so the warehouse can expect inbound product and finance can process refunds per policy.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-1.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 1" />
+  <figcaption>Diagram screenshot — add <code>returns-1.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Customer / Retailer</div>
+
+<span class="step-title">Submit return request</span>
+<div>DTC: customer initiates return in Shopify portal or contacts support. Retail: retailer sends return authorization via Rithum.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">RMA record created</span>
+<div>Return linked to original sales order. Lines, quantities, and return reason captured. RMA number generated for warehouse reference.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Return label issued (if applicable)</span>
+<div>Prepaid return label may be generated and sent to customer. Label tracking linked to RMA.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Original order reference (Shopify ID, retailer PO)</li>
+
+<li>Items and quantities to return</li>
+
+<li>Return reason code</li>
+
+<li>Customer ship-from address (for label)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>TechOMS RMA record</li>
+
+<li>Return label and tracking (if prepaid)</li>
+
+<li>Expected return visible for warehouse planning</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>RMA Open</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Return Requested (if DTC)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>RMA linked to valid shipped order — not cancelled/unshipped</li>
+
+<li>Return qty does not exceed shipped qty per line</li>
+
+<li>Return window policy enforced (if configured)</li>
+
+<li>RMA number communicated to customer on packing instructions</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify → Return request detail (DTC)</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Rithum → Return authorization (retail)</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → RMA header — linked order, lines, reason</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Return label PDF with RMA number</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Return requested for unshipped order</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Customer confusion or order still in fulfillment — should be cancel not return.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify ship confirm and tracking on original order</li>
+
+<li>Check Logiwa shipment status</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Convert to cancellation if not shipped; otherwise proceed with RMA.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">RMA not created in TechOMS from Shopify return</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Return sync connector failure or missing Shopify return webhook.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check Shopify return exists</li>
+
+<li>Review TechOMS return import job log</li>
+
+<li>Search by Shopify return ID</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Manual RMA creation linked to order; fix connector.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: verify original order shipped, create manual RMA if needed</li>
+
+<li>L2: return connector config</li>
+
+<li>Client: return policy exceptions</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Include RMA number on return packing insert</li>
+
+<li>Send customer clear return instructions within 24 hours</li>
+
+<li>Flag high-value returns for inspection priority</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="return-authorization">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">2</span>Return Authorization</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Approve or deny the return request per client policy and communicate authorization to customer, retailer, and warehouse.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Prevent unauthorized returns from congesting receiving while ensuring legitimate returns are approved quickly for customer satisfaction.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-2.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 2" />
+  <figcaption>Diagram screenshot — add <code>returns-2.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Policy evaluation</span>
+<div>Auto-approve per rules or queue for manual review (final sale, outside window, high fraud risk).</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Logiwa</div>
+
+<span class="step-title">Expected return created</span>
+<div>Authorized RMA exported to Logiwa as expected return receipt so receiving can scan against it.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Customer / retailer notified</span>
+<div>Approval email with label and instructions sent; retailer portal updated via Rithum if applicable.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>RMA request</li>
+
+<li>Client return policy rules</li>
+
+<li>Original order details</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Authorized RMA</li>
+
+<li>Logiwa expected return</li>
+
+<li>Customer notification</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>RMA Open</code>
+</td>
+<td>
+<code>Authorized</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>—</code>
+</td>
+<td>
+<code>Expected Return</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Authorization within policy — reason documented if exception</li>
+
+<li>Expected return in Logiwa matches RMA lines</li>
+
+<li>Customer received label/instructions</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → RMA — authorized status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Expected return for RMA</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Customer approval email or Shopify return status</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">RMA authorized but no expected return in Logiwa</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Return export job failure or RMA not configured for WMS sync.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check return export job log</li>
+
+<li>Search Logiwa by RMA number</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-run export or manually create expected return.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: re-trigger return export</li>
+
+<li>Client: policy exception approvals</li>
+
+<li>L2: return connector setup</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Auto-approve standard returns; manual review only for exceptions</li>
+
+<li>Sync authorized RMAs to Logiwa same day</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="warehouse-return-receiving">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">3</span>Warehouse Return Receiving</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Physically receive returned product at the warehouse and match it to the authorized RMA.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Accurately log inbound returns so inspection and disposition can proceed without mixing unauthorized or wrong-SKU returns.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-3.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 3" />
+  <figcaption>Diagram screenshot — add <code>returns-3.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Identify return</span>
+<div>Scan RMA barcode, tracking number, or lookup by customer name to open expected return.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Warehouse</div>
+
+<span class="step-title">Receive items</span>
+<div>Scan SKU and confirm quantity. Note if different from authorized lines.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Move to inspection/quarantine</span>
+<div>Inventory placed in return staging or quarantine location — not immediately pickable.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Physical return package</li>
+
+<li>RMA number or tracking</li>
+
+<li>Expected return in Logiwa</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Received return lines</li>
+
+<li>Inventory in quarantine/staging</li>
+
+<li>Variance if wrong item or qty received</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Expected Return</code>
+</td>
+<td>
+<code>Received (Quarantine)</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Return matched to valid authorized RMA</li>
+
+<li>All items scanned — unauthorized items segregated</li>
+
+<li>Inventory NOT in pickable location until inspection complete</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → Return receiving session</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Package label showing RMA/tracking</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Quarantine location assignment</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Return arrived with no matching RMA</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Unauthorized return, lost RMA reference, or RMA not synced to Logiwa.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Search TechOMS by customer name and tracking</li>
+
+<li>Check if Shopify return exists without RMA export</li>
+
+<li>Inspect packing slip in box</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Identify order and create retroactive RMA with approval; do not blind receive to pickable.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>Returns desk lead: unidentified packages</li>
+
+<li>L1: TechOMS RMA lookup and export</li>
+
+<li>Client: accept unauthorized return decision</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Dedicated returns dock and quarantine zone</li>
+
+<li>Process returns within 24 hours of arrival</li>
+
+<li>Never put uninspected returns into pickable stock</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inspection-process">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">4</span>Inspection Process</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Evaluate returned product condition and determine disposition: restock, refurbish, donate, or destroy.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Protect brand quality by only restocking sellable units while accurately recording write-offs and client billing for non-resellable returns.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-4.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 4" />
+  <figcaption>Diagram screenshot — add <code>returns-4.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Warehouse QA</div>
+
+<span class="step-title">Inspect each unit</span>
+<div>Check packaging, product condition, completeness, and authenticity per client grading rubric (A/B/C or sellable/unsellable).</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Disposition recorded</span>
+<div>Disposition code applied. Sellable moves to pickable via transfer; damaged moves to damage location or adjustment.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">RMA line disposition synced</span>
+<div>Inspection outcome updates RMA line status for refund eligibility.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Received return units in quarantine</li>
+
+<li>Client inspection grading guide</li>
+
+<li>Original product photos/spec (for counterfeit check)</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Disposition per line (restock, damage, reject)</li>
+
+<li>Restocked pickable inventory (if sellable)</li>
+
+<li>Damage adjustment records</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Quarantine</code>
+</td>
+<td>
+<code>Available or Damaged</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Authorized</code>
+</td>
+<td>
+<code>Inspected</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Every unit has disposition — none left in quarantine past SLA</li>
+
+<li>Restocked units meet grade A/sellable standard</li>
+
+<li>Damage units not in pickable locations</li>
+
+<li>Wrong-SKU returns flagged to client</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Inspection checklist completed</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → disposition / transfer transaction</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Photos of damaged or wrong items</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Restocked damaged goods</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Inspection skipped or wrong disposition code.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Pull inspection log for RMA</li>
+
+<li>Check who transferred to pickable</li>
+
+<li>Review product photos</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Pull from pickable immediately, re-inspect, adjust inventory, notify client.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>QA supervisor: grading disputes</li>
+
+<li>Client: disposition policy for borderline items</li>
+
+<li>L2: disposition sync to TechOMS</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Use client-specific grading guide — post at inspection station</li>
+
+<li>Photo-document all grade B/C and damage</li>
+
+<li>SLA: inspect within 48 hours of receipt</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="inventory-adjustment">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">5</span>Inventory Adjustment (Returns)</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Update inventory records to reflect return disposition and sync changes to TechOMS and channels.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Ensure sellable returns increase ATS accurately while damaged/write-off units are removed from available inventory.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-5.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 5" />
+  <figcaption>Diagram screenshot — add <code>returns-5.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">Logiwa</div>
+
+<span class="step-title">Transfer or adjust</span>
+<div>Sellable: transfer quarantine → pickable. Damaged: adjustment out of available or to damage location.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Logiwa → TechOMS</div>
+
+<span class="step-title">Inventory sync</span>
+<div>Updated on-hand reflected in TechOMS ATS calculation.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Channels</div>
+
+<span class="step-title">Channel update</span>
+<div>Only sellable/restocked qty increases channel availability.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Disposition results</li>
+
+<li>Location transfers</li>
+
+<li>Damage quantities</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Updated on-hand</li>
+
+<li>Adjustment audit trail</li>
+
+<li>Channel ATS</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--logiwa">Logiwa</span>
+</td>
+<td>
+<code>Quarantine qty</code>
+</td>
+<td>
+<code>Pickable or zero (damage)</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>ATS before</code>
+</td>
+<td>
+<code>ATS after restock</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Pickable qty increase matches sellable inspection count only</li>
+
+<li>Damage adjustments have reason code and approval</li>
+
+<li>TechOMS ATS reflects change within sync window</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Logiwa → adjustment/transfer record</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → inventory before/after for SKU</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">ATS increased for damaged return</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Wrong disposition or sync counted quarantine as available.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify location type is pickable</li>
+
+<li>Check disposition code on return line</li>
+
+<li>Compare Logiwa location inventory</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Reverse transfer, move to damage, re-sync inventory.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: inventory comparison Logiwa vs TechOMS</li>
+
+<li>L2: location type and sync config</li>
+
+<li>Inventory control: unauthorized adjustment review</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Adjustments over threshold require supervisor approval</li>
+
+<li>Never sync quarantine locations as available</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="refund-workflow">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">6</span>Refund Workflow</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Process customer or retailer refund/credit after return is received and inspected per policy.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Close the customer experience loop with timely, accurate refunds while preventing refund fraud and double-refunds.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-6.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 6" />
+  <figcaption>Diagram screenshot — add <code>returns-6.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Refund eligibility</span>
+<div>Based on inspection disposition, refund full/partial/shipping only per client policy.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS → Shopify</div>
+
+<span class="step-title">Issue refund (DTC)</span>
+<div>Refund processed via Shopify API. Customer notified. Order financial status updated.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS / Rithum</div>
+
+<span class="step-title">Retailer credit memo</span>
+<div>For retail returns, credit memo or inventory adjustment communicated via Rithum per retailer requirements.</div>
+
+</li>
+
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Close RMA</span>
+<div>RMA status set to Complete. All lines resolved.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Inspection disposition</li>
+
+<li>Original payment amount</li>
+
+<li>Refund policy rules</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Refund transaction</li>
+
+<li>Closed RMA</li>
+
+<li>Customer/retailer notification</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Inspected</code>
+</td>
+<td>
+<code>Refund Issued</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--techoms">TechOMS</span>
+</td>
+<td>
+<code>Refund Issued</code>
+</td>
+<td>
+<code>RMA Complete</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>Paid</code>
+</td>
+<td>
+<code>Partially/Refunded</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Refund amount matches policy for disposition</li>
+
+<li>No double refund — check prior refund transactions</li>
+
+<li>RMA closed only after refund or documented denial</li>
+
+<li>Restocking fee applied if configured</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>TechOMS → RMA — refund amount and status</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Shopify → refund transaction detail</span>
+</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Inspection disposition supporting refund decision</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Refund issued but return never received</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Auto-refund rule triggered before warehouse receipt (policy misconfiguration).</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check Logiwa return receipt timestamp vs refund timestamp</li>
+
+<li>Review auto-refund rules in TechOMS</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Escalate to client immediately; clawback process if product never returned.</dd>
+
+</dl>
+
+</div>
+
+<div class="error-card">
+<div class="error-card__title">Customer claims no refund</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Refund to alternate payment method delay, or Shopify sync failure.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Verify refund in Shopify financial timeline</li>
+
+<li>Check refund gateway status</li>
+
+<li>Confirm customer email on order</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-issue refund if failed; provide refund confirmation and timeline to customer.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: verify inspection + refund in Shopify</li>
+
+<li>L2: refund automation rules</li>
+
+<li>Client: partial refund disputes, restocking fee exceptions</li>
+
+<li>Finance: chargeback coordination</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Refund only after inspection for non-trusted return reasons</li>
+
+<li>Send refund confirmation email with amount breakdown</li>
+
+<li>Daily report: authorized RMAs without receipt &gt; 14 days</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="process" id="return-status-sync">
+<div class="process__head">
+<h2 class="process__title">
+<span class="process__num">7</span>Return Status Synchronization</h2>
+
+</div>
+
+<div class="process__body">
+<div class="field">
+<div class="field__label">
+<span>🎯</span>Purpose</div>
+
+<p>Keep return/RMA status consistent across TechOMS, Logiwa, Shopify, and Rithum throughout the return lifecycle.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>💼</span>Business Objective</div>
+
+<p>Prevent support confusion, duplicate refunds, and retailer compliance issues from desynchronized return status.</p>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🖥️</span>Systems Involved</div>
+
+<div class="pill-row">
+<span class="tag tag--techoms">TechOMS</span>
+<span class="tag tag--logiwa">Logiwa</span>
+<span class="tag tag--shopify">Shopify</span>
+<span class="tag tag--rithum">Rithum</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔗</span>Flow Diagram</div>
+
+<figure class="diagram">
+  <img src="../assets/images/diagrams/returns-7.png" onerror="this.onerror=null;this.src='../assets/images/diagrams/placeholder.svg'" alt="returns 7" />
+  <figcaption>Diagram screenshot — add <code>returns-7.png</code> to <code>assets/images/diagrams/</code></figcaption>
+</figure>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>👥</span>Step-by-Step Process</div>
+
+<ol class="steps">
+<li>
+<div class="step-actor">TechOMS</div>
+
+<span class="step-title">Canonical RMA status</span>
+<div>TechOMS maintains master return status: Open → Authorized → Received → Inspected → Refunded → Complete.</div>
+
+</li>
+
+<li>
+<div class="step-actor">Connectors</div>
+
+<span class="step-title">Bidirectional sync</span>
+<div>Warehouse events push up; refund events push to Shopify; retailer portal updated via Rithum.</div>
+
+</li>
+
+</ol>
+
+</div>
+
+<div class="card-grid">
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬇️</span>Input Data</div>
+
+<ul class="clean">
+<li>Status events from all systems</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="field">
+<div class="field__label">
+<span>⬆️</span>Output Data</div>
+
+<ul class="clean">
+<li>Unified RMA status across stack</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🔄</span>Key Status Changes</div>
+
+<div class="table-wrap">
+<table class="data">
+<thead>
+<tr>
+<th>System</th>
+<th>From</th>
+<th>To</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr>
+<td>
+<span class="tag tag--shopify">Shopify</span>
+</td>
+<td>
+<code>Return Open</code>
+</td>
+<td>
+<code>Return Closed</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<span class="tag tag--rithum">Rithum</span>
+</td>
+<td>
+<code>RMA Pending</code>
+</td>
+<td>
+<code>RMA Complete</code>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>✔️</span>Validation Points</div>
+
+<ul class="clean">
+<li>Status in all systems reflects same lifecycle stage</li>
+
+<li>Received in Logiwa → TechOMS shows Received within sync window</li>
+
+<li>Refund in TechOMS → Shopify shows refunded</li>
+
+</ul>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📸</span>Screenshots Required</div>
+
+<div class="shot">
+<span class="shot__icon">🖼️</span>
+<span>Side-by-side status from TechOMS, Logiwa, Shopify for same RMA</span>
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>🚨</span>Common Errors, Root Causes &amp; Resolution</div>
+
+<div class="error-card">
+<div class="error-card__title">Received in Logiwa but TechOMS still Authorized</div>
+
+<dl>
+<dt>Root Cause</dt>
+
+<dd>Return receipt sync job failure.</dd>
+
+<dt>Debugging Steps</dt>
+
+<dd>
+<ol class="clean">
+<li>Check Logiwa return receipt completion</li>
+
+<li>Review inbound return sync job log</li>
+
+<li>Match RMA reference IDs</li>
+
+</ol>
+
+</dd>
+
+<dt>Resolution</dt>
+
+<dd>Re-trigger sync; manually update TechOMS status with warehouse confirmation.</dd>
+
+</dl>
+
+</div>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>📞</span>Escalation Path</div>
+
+<ol class="clean">
+<li>L1: re-trigger return sync jobs</li>
+
+<li>L2: return connector bidirectional config</li>
+
+</ol>
+
+</div>
+
+<div class="field">
+<div class="field__label">
+<span>⭐</span>Best Practices</div>
+
+<ul class="clean">
+<li>Daily report: RMA status mismatches</li>
+
+<li>TechOMS RMA history is audit source for disputes</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script> -->
+</body>
+</html>
