@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PO status mismatch Logiwa vs TechOMS — Purchase Order Flow FAQ" />
+  <title>Status mismatch? | Purchase Order Flow</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../../assets/css/global.css" />
+</head>
+
+<body data-page="purchase-order-faq">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-group">
+          <div class="nav-group__label">Overview</div>
+          <a href="../../index.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">⌂</span><span>Home</span></a>
+          <a href="../architecture.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">▦</span><span>System Architecture</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Operational Flows</div>
+          <a href="../sales-order.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🛒</span><span>Sales Order Flow</span></a>
+          <a href="../purchase-order.html" class="nav-link active"><span class="nav-link__icon" aria-hidden="true">📦</span><span>Purchase Order Flow</span></a>
+          <a href="../returns.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">↩</span><span>Return / RMA Flow</span></a>
+          <a href="../inventory.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">📊</span><span>Inventory Flow</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Integration</div>
+          <a href="../integration.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🔗</span><span>Integration Guide</span></a>
+          <a href="../fulfillment-jobs.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">⚡</span><span>Fulfillment Jobs</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Support & Reference</div>
+          <a href="../troubleshooting.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🔍</span><span>Troubleshooting Matrix</span></a>
+          <a href="../onboarding.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🎓</span><span>Onboarding Guide</span></a>
+          <a href="../critical-screens.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🖥</span><span>Critical Screens</span></a>
+          <a href="../glossary.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">📖</span><span>Glossary</span></a>
+          <a href="../doc-structure.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🗂</span><span>Documentation Structure</span></a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+        <header>
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span>Handbook</span>
+            <span class="sep">/</span>
+            <a href="../purchase-order.html">Purchase Order Flow</a>
+            <span class="sep">/</span>
+            <span>Status mismatch?</span>
+          </nav>
+          <h1 class="page-title">Logiwa Completed but TechOMS still open?</h1>
+          <p class="page-lead">Search in <strong>TechOMS</strong> and <strong>Logiwa</strong> · compare lines · pick a fix · re-sync.</p>
+        </header>
+
+        <div class="channel-footprint__grid" style="margin-bottom:18px">
+          <article class="channel-card">
+            <h3 class="channel-card__name"><span class="tag tag--logiwa">Logiwa</span></h3>
+            <p class="channel-card__use"><strong>Completed</strong> — received in warehouse</p>
+          </article>
+          <article class="channel-card">
+            <h3 class="channel-card__name"><span class="tag tag--techoms">TechOMS</span></h3>
+            <p class="channel-card__use"><strong>Sent to Warehouse</strong> — not Received</p>
+          </article>
+        </div>
+
+        <h2 class="section-h">Where to search</h2>
+
+        <div class="owner-grid">
+          <article class="owner-card">
+            <span class="tag tag--techoms">TechOMS</span>
+            <span class="owner-card__role">Logs &amp; PO data</span>
+            <ul class="owner-tree">
+              <li><strong>Purchasing → Purchase Orders</strong> — copy receipt ID · view PO lines</li>
+              <li><strong>Settings → Fulfillment Channels</strong> — search receipt ID in channel logs</li>
+            </ul>
+          </article>
+          <article class="owner-card">
+            <span class="tag tag--logiwa">Logiwa</span>
+            <span class="owner-card__role">Receipt lines</span>
+            <ul class="owner-tree">
+              <li><strong>Inbound → Expected Receipts</strong> — open PO · compare line items</li>
+              <li>Check item count, SKUs, and quantities vs TechOMS</li>
+              <li>Flag extra lines not exported from TechOMS</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="shot">
+          <span class="shot__icon">🖼️</span>
+          <span>TechOMS — Fulfillment Channel logs: search by receipt ID → open message for error detail</span>
+        </div>
+
+        <div class="shot">
+          <span class="shot__icon">🖼️</span>
+          <span>Logiwa — Expected Receipts: line-by-line SKU &amp; qty vs TechOMS PO</span>
+        </div>
+
+        <h2 class="section-h">Investigation checklist</h2>
+
+        <ul class="checklist" aria-label="Status mismatch investigation steps">
+          <li>Check Fulfillment Channel logs for error details</li>
+          <li>Verify receipt ID in logs matches PO</li>
+          <li>Compare PO lines in TechOMS vs Logiwa (item count, SKUs, quantities)</li>
+          <li>Identify extra items in Logiwa that don't exist in TechOMS</li>
+          <li>Decide on fix — see <a href="internal-handling.html">internal handling policy</a> (client/retailer: usually <strong>keep</strong> extra line)</li>
+          <li>Apply fix and retry sync</li>
+          <li>Verify status changed to <strong>Received</strong></li>
+        </ul>
+
+        <aside class="callout callout--note">
+          <span class="callout__icon">ℹ️</span>
+          <div>
+            <strong>Client/retailer policy (confirmed)</strong>
+            <p>Qty mismatch → receive actual in Logiwa; client updates Shopify manually (TechOMS PO cannot be edited).
+              Extra line from manufacturer cross-ship → <strong>keep on PO #1</strong>, do not remove. <a
+                href="internal-handling.html#scenario">Why it happens</a> · <a href="internal-handling.html">Full
+                policy</a>.</p>
+          </div>
+        </aside>
+
+        <h2 class="section-h">Solutions</h2>
+
+        <div class="channel-footprint__grid">
+          <article class="channel-card channel-card--lead">
+            <div class="channel-card__top">
+              <span class="channel-card__num">✓</span>
+              <span class="channel-card__icon" aria-hidden="true">➕</span>
+            </div>
+            <h3 class="channel-card__name">Keep extra line (client/retailer)</h3>
+            <p class="channel-card__use">Manufacturer shipped PO #2 item on PO #1 — client/retailer asked to add to PO #1. <strong>Do not remove.</strong></p>
+            <span class="channel-card__model">Default for cross-ship</span>
+          </article>
+
+          <article class="channel-card">
+            <div class="channel-card__top">
+              <span class="channel-card__num">Qty</span>
+              <span class="channel-card__icon" aria-hidden="true">📊</span>
+            </div>
+            <h3 class="channel-card__name">Qty mismatch</h3>
+            <p class="channel-card__use">Receive actual qty in Logiwa · notify client · they fix PO in Shopify manually.</p>
+            <span class="channel-card__model">No TechOMS edit</span>
+          </article>
+
+          <article class="channel-card">
+            <div class="channel-card__top">
+              <span class="channel-card__num">✕</span>
+              <span class="channel-card__icon" aria-hidden="true">🗑️</span>
+            </div>
+            <h3 class="channel-card__name">Remove line</h3>
+            <p class="channel-card__use">Only if line was a <strong>receiving mistake</strong> — not manufacturer cross-ship. Supervisor confirm first.</p>
+            <span class="channel-card__model">Exception only</span>
+          </article>
+        </div>
+
+        <aside class="callout callout--warning">
+          <span class="callout__icon">⚠️</span>
+          <div>
+            <strong>Sync blocked?</strong>
+            <p>Manual Logiwa lines are not supported by TechOMS — status may not move to Received until reconciled or manually received. See checklist above.</p>
+          </div>
+        </aside>
+
+        <aside class="callout callout--tip">
+          <span class="callout__icon">✅</span>
+          <div>
+            <strong>After fix</strong>
+            <p>Re-trigger receipt sync → confirm TechOMS shows <strong>Received</strong> → verify ATS updates (<a href="../inventory.html">Inventory Flow</a>).</p>
+          </div>
+        </aside>
+
+        <div class="ref-pills">
+          <a class="ref-pill" href="../critical-screens.html">Critical Screens →</a>
+          <a class="ref-pill" href="../troubleshooting.html#error-docs">Error Runbooks →</a>
+          <a class="ref-pill" href="../purchase-order.html#faq">← All common questions</a>
+        </div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/search-index.js"></script>
+  <script src="../../assets/js/app.js"></script>
+</body>
+
+</html>
