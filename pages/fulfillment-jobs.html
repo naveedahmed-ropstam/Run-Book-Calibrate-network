@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="TechOMS Fulfillment Channel ↔ Logiwa — events, entity types, and how jobs are configured" />
+  <title>Fulfillment Job | Calibrate Networks Operations Handbook</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/global.css?v=20250612b" />
+</head>
+
+<body data-page="fulfillment-jobs">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-group">
+          <div class="nav-group__label">Overview</div>
+          <a href="../index.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">⌂</span>
+            <span>Home</span>
+          </a>
+          <a href="architecture.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">▦</span>
+            <span>System Architecture</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Operational Flows</div>
+          <a href="sales-order.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🛒</span>
+            <span>Sales Order Flow</span>
+          </a>
+          <a href="purchase-order.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📦</span>
+            <span>Purchase Order Flow</span>
+          </a>
+          <a href="returns.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">↩</span>
+            <span>Return / RMA Flow</span>
+          </a>
+          <a href="inventory.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📊</span>
+            <span>Inventory Flow</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Integration</div>
+          <a href="integration.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🔗</span>
+            <span>Integration Guide</span>
+          </a>
+          <a href="fulfillment-jobs.html" class="nav-link active">
+            <span class="nav-link__icon" aria-hidden="true">⚡</span>
+            <span>Fulfillment Jobs</span>
+          </a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Support & Reference</div>
+          <a href="troubleshooting.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🔍</span>
+            <span>Troubleshooting Matrix</span>
+          </a>
+          <a href="onboarding.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🎓</span>
+            <span>Onboarding Guide</span>
+          </a>
+          <a href="critical-screens.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🖥</span>
+            <span>Critical Screens</span>
+          </a>
+          <a href="glossary.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">📖</span>
+            <span>Glossary</span>
+          </a>
+          <a href="doc-structure.html" class="nav-link">
+            <span class="nav-link__icon" aria-hidden="true">🗂</span>
+            <span>Documentation Structure</span>
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme"
+          title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+        <header>
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span>Handbook</span>
+            <span class="sep">/</span>
+            <span>Fulfillment Jobs</span>
+          </nav>
+
+          <h1 class="page-title">TechOMS ↔ Logiwa Fulfillment Jobs</h1>
+
+          <p class="page-lead">Read <strong>Fulfillment Channel logs</strong>, understand each <strong>entity type</strong>
+            message, and configure <strong>webhook vs recurring</strong> jobs for TechOMS ↔ Logiwa.</p>
+
+          <nav class="toc" aria-label="On this page">
+            <a href="#logs">Reading logs</a>
+            <a href="#log-summary">Log summary</a>
+            <a href="#job-modes">Jobs &amp; recurring setup</a>
+            <a href="#recurring-job-types">7 job types</a>
+            <a href="#setup-recurring-jobs">Setup guide</a>
+            <a href="#channel-settings">Account &amp; channel tabs</a>
+            <a href="#quick-ref">Quick reference</a>
+          </nav>
+        </header>
+
+        <section class="log-guide" id="logs">
+          <div class="log-guide__banner">
+            <div class="log-guide__banner-icon" aria-hidden="true">📋</div>
+            <div>
+              <h2 class="log-guide__title">Reading Fulfillment Channel Logs</h2>
+              <p class="log-guide__lead">Open <strong>Channels → Fulfillment Channels → Logiwa → Logs</strong> — match the message, check the outcome chips, follow the flow bar.</p>
+            </div>
+          </div>
+
+          <div class="log-nav-path" aria-label="Navigation to channel logs">
+            <span class="tag tag--techoms">Channels</span>
+            <span class="flow-arrow">→</span>
+            <span>Fulfillment Channels</span>
+            <span class="flow-arrow">→</span>
+            <span class="tag tag--logiwa">Logiwa</span>
+            <span class="flow-arrow">→</span>
+            <strong>Logs</strong>
+          </div>
+
+          <nav class="log-entity-nav" aria-label="Jump to entity log">
+            <a class="log-entity-nav__link" href="#log-shipment"><span class="log-entity-nav__icon">🚚</span> Shipment</a>
+            <a class="log-entity-nav__link" href="#log-receipt"><span class="log-entity-nav__icon">📥</span> Receipt</a>
+            <a class="log-entity-nav__link" href="#log-product"><span class="log-entity-nav__icon">🏷️</span> Product</a>
+            <a class="log-entity-nav__link" href="#log-inventory"><span class="log-entity-nav__icon">📊</span> Inventory</a>
+            <a class="log-entity-nav__link" href="#log-sales-order"><span class="log-entity-nav__icon">🛒</span> Sales Order</a>
+            <a class="log-entity-nav__link" href="#log-purchase-order"><span class="log-entity-nav__icon">📦</span> PO</a>
+          </nav>
+
+          <div class="log-scan-wrap" id="log-summary">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>Entity</th>
+                  <th>Direction</th>
+                  <th>Success message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🚚 Shipment</td>
+                  <td><span class="tag tag--logiwa">Logiwa</span> → <span class="tag tag--techoms">TechOMS</span></td>
+                  <td><code>Receiving shipments…completed successfully</code></td>
+                </tr>
+                <tr>
+                  <td>📥 Receipt</td>
+                  <td><span class="tag tag--logiwa">Logiwa</span> → <span class="tag tag--techoms">TechOMS</span></td>
+                  <td><code>Receiving receipts…completed successfully</code></td>
+                </tr>
+                <tr>
+                  <td>🏷️ Product</td>
+                  <td><span class="tag tag--techoms">TechOMS</span> → <span class="tag tag--logiwa">Logiwa</span></td>
+                  <td><code>Sending Products…completed successfully</code></td>
+                </tr>
+                <tr>
+                  <td>📊 Inventory</td>
+                  <td><span class="tag tag--logiwa">Logiwa</span> → <span class="tag tag--techoms">TechOMS</span></td>
+                  <td><code>Receiving inventory levels…completed</code></td>
+                </tr>
+                <tr>
+                  <td>🛒 Sales Order</td>
+                  <td><span class="tag tag--shopify">Shopify</span> → <span class="tag tag--techoms">TechOMS</span></td>
+                  <td><code>Sales Order import completed</code></td>
+                </tr>
+                <tr>
+                  <td>📦 Purchase Order</td>
+                  <td><span class="tag tag--shopify">Shopify</span> → <span class="tag tag--techoms">TechOMS</span> → <span class="tag tag--logiwa">Logiwa</span></td>
+                  <td><code>PO import / export completed</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="entity-log-grid">
+
+            <article class="entity-log-tile entity-log-tile--in" id="log-shipment">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">🚚</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Shipment</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--logiwa">Logiwa</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--techoms">TechOMS</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for this message</span>
+                  <code class="entity-log-tile__msg-text">Receiving shipments from channel to TechOMS completed successfully</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see it</span>
+                  <ul class="entity-log-tile__chips">
+                    <li>Ship confirm received from Logiwa</li>
+                    <li>Tracking number stored in TechOMS</li>
+                    <li>Order status → <strong>Shipped</strong></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Logiwa</span><strong>#123654</strong> shipped</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Sync</span>completed</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">TechOMS</span><strong>Shipped</strong></div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Shopify</span>tracking sent</div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--warn">⚠ Fail → stuck In Progress · no tracking</span>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--in" id="log-receipt">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">📥</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Receipt</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--logiwa">Logiwa</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--techoms">TechOMS</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for this message</span>
+                  <code class="entity-log-tile__msg-text">Receiving receipts from channel to TechOMS completed successfully</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see it</span>
+                  <ul class="entity-log-tile__chips">
+                    <li>PO receiving finished in Logiwa</li>
+                    <li>Lines matched in TechOMS</li>
+                    <li>PO → <strong>Received</strong> · on-hand updated</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Logiwa</span>PO <strong>#FEDEX 364C-US</strong> done</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Sync</span>Receipt <strong>#291384</strong></div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">TechOMS</span><strong>Received</strong></div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--retry">↻ Auto-retry 1 hr</span>
+                <span class="log-badge log-badge--warn">⚠ Line mismatch won't self-heal · <a href="purchase-order/status-mismatch.html">manual fix</a></span>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--wide entity-log-tile--alert" aria-label="Receipt line mismatch example">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">⚠️</span>
+                <div>
+                  <h3 class="entity-log-tile__name">No success message?</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--high">Line mismatch</span>
+                  </div>
+                </div>
+              </div>
+              <div class="entity-log-tile__alert-body">
+                <div class="entity-log-tile__alert-copy">
+                  <p>PO stays <strong>Sent to Warehouse</strong> in TechOMS while Logiwa shows <strong>Completed</strong>.
+                    Search the <strong>receipt ID</strong> in Fulfillment Channel logs — a manually added Logiwa line is the
+                    usual cause.</p>
+                </div>
+                <div class="entity-log-tile__flow-bar entity-log-tile__flow-bar--inline">
+                  <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">TechOMS</span>12 lines sent</div>
+                  <span class="entity-log-tile__flow-arrow">→</span>
+                  <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Logiwa</span><strong>13</strong> received</div>
+                  <span class="entity-log-tile__flow-arrow">→</span>
+                  <div class="entity-log-tile__flow-node entity-log-tile__flow-node--err"><span class="entity-log-tile__flow-node__sys">Error</span>Line #13 not found</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--out" id="log-product">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">🏷️</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Product</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--techoms">TechOMS</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--logiwa">Logiwa</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for this message</span>
+                  <code class="entity-log-tile__msg-text">Sending Products from TechOMS to channel completed successfully</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see it</span>
+                  <ul class="entity-log-tile__chips">
+                    <li>SKU exists in Logiwa catalog</li>
+                    <li>Name &amp; price updated</li>
+                    <li>Ready for PO lines &amp; receiving</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">TechOMS</span>New SKU <strong>16289…</strong></div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Sync</span>completed</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Logiwa</span>SKU live</div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--warn">⚠ Fail → SKU missing · can't build PO lines</span>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--in" id="log-inventory">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">📊</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Inventory Level</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--logiwa">Logiwa</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--techoms">TechOMS</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for this message</span>
+                  <code class="entity-log-tile__msg-text">Receiving inventory levels from channel to TechOMS completed</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see it</span>
+                  <ul class="entity-log-tile__chips">
+                    <li>On-hand qty updated in TechOMS</li>
+                    <li>Per SKU / warehouse</li>
+                    <li>Shopify ATS on next 8 hr job</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Logiwa</span><strong>+50</strong> units</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">TechOMS</span>on-hand 50</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Shopify</span>ATS updated</div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--retry">↻ Auto-retry 8 hr</span>
+                <span class="log-badge log-badge--warn">⚠ Fail → wait for next snapshot</span>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--shopify" id="log-sales-order">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">🛒</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Sales Order</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--shopify">Shopify</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--techoms">TechOMS</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for this message (Sales Channel)</span>
+                  <code class="entity-log-tile__msg-text">Sales Order import completed</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see it</span>
+                  <ul class="entity-log-tile__chips">
+                    <li>Shopify order in TechOMS</li>
+                    <li>Ready to release to Logiwa</li>
+                    <li>Webhook or 1 hr poll</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Shopify</span>Order <strong>#123654</strong></div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">TechOMS</span>imported</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Logiwa</span>exported on release</div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--retry">↻ Webhook + 1 hr poll</span>
+                <span class="log-badge log-badge--warn">⚠ Fail → order missing in TechOMS</span>
+              </div>
+            </article>
+
+            <article class="entity-log-tile entity-log-tile--shopify" id="log-purchase-order">
+              <div class="entity-log-tile__hero">
+                <span class="entity-log-tile__icon" aria-hidden="true">📦</span>
+                <div>
+                  <h3 class="entity-log-tile__name">Purchase Order</h3>
+                  <div class="flow-chain flow-chain--tight">
+                    <span class="tag tag--shopify">Shopify</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--techoms">TechOMS</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="tag tag--logiwa">Logiwa</span>
+                  </div>
+                </div>
+                <span class="entity-log-tile__status entity-log-tile__status--ok">✓ Success</span>
+              </div>
+              <div class="entity-log-tile__body">
+                <div class="entity-log-tile__panel entity-log-tile__panel--log">
+                  <span class="entity-log-tile__panel-label">Look for these messages</span>
+                  <code class="entity-log-tile__msg-text">Purchase Order import completed</code>
+                  <code class="entity-log-tile__msg-text">Purchase Order export completed</code>
+                </div>
+                <div class="entity-log-tile__panel entity-log-tile__panel--result">
+                  <span class="entity-log-tile__panel-label">When you see them</span>
+                  <ul class="entity-log-tile__chips">
+                    <li><strong>Import</strong> — PO locked in TechOMS</li>
+                    <li><strong>Export</strong> — Pending Receipt in Logiwa</li>
+                    <li>Export has <strong>no auto-retry</strong></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="entity-log-tile__flow-bar" aria-label="Example flow">
+                <div class="entity-log-tile__flow-node"><span class="entity-log-tile__flow-node__sys">Shopify</span>PO <strong>#FEDEX 364C-US</strong></div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">TechOMS</span>locked</div>
+                <span class="entity-log-tile__flow-arrow">→</span>
+                <div class="entity-log-tile__flow-node entity-log-tile__flow-node--ok"><span class="entity-log-tile__flow-node__sys">Logiwa</span><strong>Pending Receipt</strong></div>
+              </div>
+              <div class="entity-log-tile__foot">
+                <span class="log-badge log-badge--no-retry">✗ No auto-retry on export</span>
+                <span class="log-badge log-badge--warn">⚠ Fail → Ready to Send · manual resend</span>
+              </div>
+            </article>
+
+          </div>
+
+          <p class="log-guide__note">Receipt poll runs every <strong>1 hr</strong> but <strong>won't fix line mismatch</strong> — manual fix required.</p>
+        </section>
+
+        <section class="jobs-guide" id="job-modes">
+          <div class="jobs-guide__banner">
+            <div class="jobs-guide__banner-icon" aria-hidden="true">⚙️</div>
+            <div>
+              <h2 class="jobs-guide__title">Jobs &amp; Recurring Setup</h2>
+              <p class="jobs-guide__lead">Three ways automation runs in TechOMS — then configure schedules, find pages, and apply Calibrate defaults.</p>
+            </div>
+          </div>
+
+          <h3 class="jobs-guide__sub" id="job-modes-cards">Two Ways Jobs Run</h3>
+          <div class="job-mode-matrix job-mode-matrix--three">
+            <article class="job-mode-card job-mode-card--webhook">
+              <span class="job-mode-card__icon" aria-hidden="true">⚡</span>
+              <h4 class="job-mode-card__title">1 · Webhook</h4>
+              <p class="job-mode-card__when">Fires <strong>immediately</strong> on ship confirm, receipt complete, PO approved.</p>
+              <div class="flow-pipeline__sub">
+                <span class="flow-pipeline__chip">~seconds</span>
+                <span class="flow-pipeline__chip">Event-driven</span>
+              </div>
+              <p class="job-mode-card__where">Channel → Mode: <strong>Webhook</strong></p>
+            </article>
+            <article class="job-mode-card job-mode-card--recurring">
+              <span class="job-mode-card__icon" aria-hidden="true">🕐</span>
+              <h4 class="job-mode-card__title">2 · Recurring</h4>
+              <p class="job-mode-card__when">Runs on a <strong>schedule</strong> — inventory, receipts, orders on a fixed poll.</p>
+              <div class="flow-pipeline__sub">
+                <span class="flow-pipeline__chip">Global</span>
+                <span class="flow-pipeline__chip">Per-channel</span>
+              </div>
+              <p class="job-mode-card__where">Account → Recurring Jobs</p>
+            </article>
+          </div>
+
+          <h3 class="jobs-guide__sub" id="recurring-job-types">7 Recurring Job Types</h3>
+          <div class="job-type-grid">
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">🛒</span>
+                <h4 class="job-type-card__name">Sync Orders</h4>
+                <span class="job-speed-pill job-speed-pill--fast">15 min</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--shopify">Channel</span><span class="flow-arrow">→</span><span class="tag tag--techoms">TechOMS</span></div>
+              <p class="job-type-card__entity">Sales Order</p>
+              <p class="job-type-card__purpose">Import customer orders from sales channel</p>
+              <span class="job-type-card__level">Global / Per-channel</span>
+            </article>
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">🚚</span>
+                <h4 class="job-type-card__name">Sync Shipments</h4>
+                <span class="job-speed-pill job-speed-pill--fast">15–30 min</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--logiwa">Fulfillment</span><span class="flow-arrow">→</span><span class="tag tag--techoms">TechOMS</span></div>
+              <p class="job-type-card__entity">Shipment</p>
+              <p class="job-type-card__purpose">Ship confirm + tracking into TechOMS</p>
+              <span class="job-type-card__level">Global / Per-channel</span>
+            </article>
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">📥</span>
+                <h4 class="job-type-card__name">Sync Receipts</h4>
+                <span class="job-speed-pill job-speed-pill--fast">1 hr</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--logiwa">Logiwa</span><span class="flow-arrow">→</span><span class="tag tag--techoms">TechOMS</span></div>
+              <p class="job-type-card__entity">Receipt</p>
+              <p class="job-type-card__purpose">Retry failed PO receipts (auto-recovery)</p>
+              <span class="job-type-card__level">Global / Per-channel</span>
+            </article>
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">📊</span>
+                <h4 class="job-type-card__name">Sync Inventory</h4>
+                <span class="job-speed-pill job-speed-pill--slow">8 hr</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--logiwa">Logiwa</span><span class="flow-arrow">→</span><span class="tag tag--techoms">TechOMS</span><span class="flow-arrow">→</span><span class="tag tag--shopify">Shopify</span></div>
+              <p class="job-type-card__entity">Inventory Level</p>
+              <p class="job-type-card__purpose">Update stock across all channels</p>
+              <span class="job-type-card__level">Global</span>
+            </article>
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">🏷️</span>
+                <h4 class="job-type-card__name">Sync Products</h4>
+                <span class="job-speed-pill job-speed-pill--slow">24 hr</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--techoms">TechOMS</span><span class="flow-arrow">→</span><span class="tag tag--logiwa">Logiwa</span></div>
+              <p class="job-type-card__entity">Product</p>
+              <p class="job-type-card__purpose">Full product catalog sync</p>
+              <span class="job-type-card__level">Global / Per-channel</span>
+            </article>
+            <article class="job-type-card">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">📦</span>
+                <h4 class="job-type-card__name">Sync Purchase Orders</h4>
+                <span class="job-speed-pill job-speed-pill--fast">1 hr</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--shopify">Channel</span><span class="flow-arrow">→</span><span class="tag tag--techoms">TechOMS</span><span class="flow-arrow">→</span><span class="tag tag--logiwa">Logiwa</span></div>
+              <p class="job-type-card__entity">Purchase Order</p>
+              <p class="job-type-card__purpose">Import POs to warehouse</p>
+              <span class="job-type-card__level">Global</span>
+            </article>
+            <article class="job-type-card job-type-card--wide">
+              <div class="job-type-card__top">
+                <span class="job-type-card__icon">🔄</span>
+                <h4 class="job-type-card__name">Export Queue</h4>
+                <span class="job-speed-pill job-speed-pill--fast">5–15 min</span>
+              </div>
+              <div class="job-type-card__flow"><span class="tag tag--techoms">TechOMS</span><span class="flow-arrow">→</span><span>All Channels</span></div>
+              <p class="job-type-card__entity">All Entities</p>
+              <p class="job-type-card__purpose">Process pending export queue — failover when webhook misses</p>
+              <span class="job-type-card__level">Global only</span>
+            </article>
+          </div>
+
+          <h3 class="jobs-guide__sub" id="setup-recurring-jobs">How to Setup Recurring Jobs</h3>
+          <div class="setup-methods">
+            <article class="setup-method setup-method--a">
+              <div class="setup-method__badge">A</div>
+              <h4 class="setup-method__title">Account-Level (Global)</h4>
+              <p class="setup-method__desc">All <strong>stable channels</strong> at once — Calibrate uses this for Logiwa.</p>
+              <div class="setup-method__path">
+                <span class="tag tag--techoms">Account</span><span class="flow-arrow">→</span><span>System Settings</span><span class="flow-arrow">→</span><strong>Recurring Jobs</strong>
+              </div>
+              <ol class="setup-method__steps">
+                <li><span class="setup-method__num">1</span> Open <strong>Recurring Jobs</strong> tab</li>
+                <li><span class="setup-method__num">2</span> Check <strong>Enabled</strong></li>
+                <li><span class="setup-method__num">3</span> Set <strong>Period</strong> + <strong>Delay</strong></li>
+                <li><span class="setup-method__num">4</span> Press <strong>Save</strong></li>
+              </ol>
+              <p class="setup-method__note setup-method__note--ok">✅ Inventory · products · export queue</p>
+            </article>
+
+            <article class="setup-method setup-method--c">
+              <div class="setup-method__badge">C</div>
+              <h4 class="setup-method__title">Webhook + Emergency Fallback</h4>
+              <p class="setup-method__desc">Instant webhook with scheduled backup if an event is missed.</p>
+              <div class="setup-method__path">
+                <span class="tag tag--techoms">Channels</span><span class="flow-arrow">→</span><span>[Channel]</span><span class="flow-arrow">→</span><strong>Mode: Webhook</strong>
+              </div>
+              <ol class="setup-method__steps">
+                <li><span class="setup-method__num">1</span> Set <strong>Mode</strong> to Webhook</li>
+                <li><span class="setup-method__num">2</span> <strong>Delay</strong> = None (instant)</li>
+                <li><span class="setup-method__num">3</span> <strong>Emergency Job Period</strong> = Each 15 min</li>
+                <li><span class="setup-method__num">4</span> Press <strong>Save</strong></li>
+              </ol>
+              <p class="setup-method__note setup-method__note--ok">✅ Recommended for Logiwa orders &amp; receipts</p>
+            </article>
+          </div>
+
+          <div class="jobs-guide__takeaways">
+            <h4 class="jobs-guide__takeaways-title">🎯 Key takeaways</h4>
+            <div class="jobs-guide__takeaways-grid">
+              <div class="jobs-guide__takeaway"><span>⚡</span><strong>Webhook</strong> = instant sync (recommended)</div>
+              <div class="jobs-guide__takeaway"><span>↻</span><strong>Emergency period</strong> = 15 min fallback</div>
+              <div class="jobs-guide__takeaway"><span>🕐</span><strong>Account jobs</strong> = all stable channels</div>
+              <div class="jobs-guide__takeaway"><span>⚠️</span><strong>Receipt retry</strong> won't fix line mismatch</div>
+              <div class="jobs-guide__takeaway"><span>✗</span><strong>PO export</strong> = no auto-retry · manual resend</div>
+            </div>
+          </div>
+        </section>
+
+       
+  <script src="../assets/js/search-index.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+
+</html>

@@ -55,6 +55,10 @@
         <span class="nav-link__icon" aria-hidden="true">🔗</span>
         <span>Integration Guide</span>
       </a>
+      <a href="fulfillment-jobs.html" class="nav-link">
+        <span class="nav-link__icon" aria-hidden="true">⚡</span>
+        <span>Fulfillment Jobs</span>
+      </a>
     </div>
     <div class="nav-group">
       <div class="nav-group__label">Support & Reference</div>
@@ -466,6 +470,90 @@
 <span class="tag tag--med">Medium</span>
 </td>
 </tr> -->
+
+</tbody>
+
+</table>
+
+</div>
+
+<h2 class="section-h" id="error-docs">Error Runbooks</h2>
+
+<p class="page-lead">Documented errors with investigation steps — add one row per issue.</p>
+
+<div class="table-wrap">
+<table class="data" id="error-docs-table">
+<thead>
+<tr>
+<th>Error</th>
+<th>Systems</th>
+<th>Symptom</th>
+<th>Message</th>
+<th>Root Cause</th>
+<th>Investigation</th>
+<th>Fix</th>
+<th>Severity</th>
+</tr>
+
+</thead>
+
+<tbody>
+<tr data-severity="High" id="po-manual-line">
+<td>PO status not synced after receiving</td>
+<td>Logiwa → TechOMS</td>
+<td>Logiwa <code>Completed</code> · TechOMS <code>Sent to Warehouse</code></td>
+<td>—</td>
+<td>Extra/manual line in Logiwa or line mismatch vs TechOMS</td>
+<td>
+<ol class="clean">
+<li>TechOMS: Fulfillment Channel logs — search receipt ID</li>
+<li>TechOMS: Purchasing → Purchase Orders — verify receipt ID &amp; lines</li>
+<li>Logiwa: Inbound → Expected Receipts — compare SKUs &amp; qty</li>
+<li>Identify extra items or qty mismatches</li>
+</ol>
+</td>
+<td>Client/retailer: keep cross-ship extra line · qty mismatch: client/retailer updates Shopify · see <a href="purchase-order/internal-handling.html">internal handling</a></td>
+<td>
+<span class="tag tag--high">High</span>
+</td>
+</tr>
+
+<tr data-severity="Medium" id="po-connection-refused">
+<td>PO failed to send to Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>TechOMS <code>Ready to Send</code> · not in Logiwa</td>
+<td><code>Connection refused (wms-inventory-prod:7031)</code></td>
+<td>Temporal connectivity issue between TechOMS and Logiwa WMS</td>
+<td>
+<ol class="clean">
+<li>Confirm no expected receipt in Logiwa</li>
+<li>Check Fulfillment Channel logs for failed send</li>
+</ol>
+</td>
+<td>Resend PO from TechOMS · escalate L2 if repeated</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
+
+<tr data-severity="Medium" id="missing-product-dimensions">
+<td>Product missing dimensions in Logiwa</td>
+<td>TechOMS → Logiwa</td>
+<td>Order exists in Logiwa · export/sync fails in Fulfillment Channel logs</td>
+<td><code>Product variant #433 ('BT16345__BlueStripe_XL'): UnitSystem.DistanceUnit - Required</code></td>
+<td>Product variant in Logiwa has no length/width/height dimensions</td>
+<td>
+<ol class="clean">
+<li>Find error in Fulfillment Channel logs (one line per affected SKU)</li>
+<li>Note SKU and variant ID from the message</li>
+<li>Confirm order or product exists in Logiwa without dimensions</li>
+</ol>
+</td>
+<td>Add dimensions to the product variant in Logiwa → re-export or re-sync order</td>
+<td>
+<span class="tag tag--med">Medium</span>
+</td>
+</tr>
 
 </tbody>
 

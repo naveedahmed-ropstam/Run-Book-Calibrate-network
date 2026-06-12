@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PO mismatch internal handling — client/retailer policy" />
+  <title>Internal handling policy | Purchase Order Flow</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="../../assets/css/global.css" />
+</head>
+
+<body data-page="purchase-order-faq">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <div class="sidebar__brand-logo">CN</div>
+        <div>
+          <div class="sidebar__brand-title">Calibrate Networks Operations Handbook</div>
+          <div class="sidebar__brand-sub">TechOMS · Logiwa · Rithum</div>
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-group">
+          <div class="nav-group__label">Overview</div>
+          <a href="../../index.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">⌂</span><span>Home</span></a>
+          <a href="../architecture.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">▦</span><span>System Architecture</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Operational Flows</div>
+          <a href="../sales-order.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🛒</span><span>Sales Order Flow</span></a>
+          <a href="../purchase-order.html" class="nav-link active"><span class="nav-link__icon" aria-hidden="true">📦</span><span>Purchase Order Flow</span></a>
+          <a href="../returns.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">↩</span><span>Return / RMA Flow</span></a>
+          <a href="../inventory.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">📊</span><span>Inventory Flow</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Integration</div>
+          <a href="../integration.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🔗</span><span>Integration Guide</span></a>
+          <a href="../fulfillment-jobs.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">⚡</span><span>Fulfillment Jobs</span></a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group__label">Support & Reference</div>
+          <a href="../troubleshooting.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🔍</span><span>Troubleshooting Matrix</span></a>
+          <a href="../onboarding.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🎓</span><span>Onboarding Guide</span></a>
+          <a href="../critical-screens.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🖥</span><span>Critical Screens</span></a>
+          <a href="../glossary.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">📖</span><span>Glossary</span></a>
+          <a href="../doc-structure.html" class="nav-link"><span class="nav-link__icon" aria-hidden="true">🗂</span><span>Documentation Structure</span></a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="scrim" id="scrim" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button type="button" class="topbar__menu-btn" id="menu-btn" aria-label="Open navigation">☰</button>
+        <button type="button" class="topbar__search" id="search-open">
+          <span aria-hidden="true">🔍</span>
+          <span>Search the handbook…</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+        <div class="topbar__spacer"></div>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme" title="Toggle light / dark">🌙 Dark</button>
+      </header>
+
+      <main class="content" id="main">
+        <header>
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <span>Handbook</span>
+            <span class="sep">/</span>
+            <a href="../purchase-order.html">Purchase Order Flow</a>
+            <span class="sep">/</span>
+            <span>Internal handling policy</span>
+          </nav>
+          <h1 class="page-title">PO mismatch — internal handling</h1>
+          <p class="page-lead">Confirmed policy for <strong>client/retailer</strong> integration POs — qty mismatches &amp; extra
+            lines. <em>Ops leadership approved.</em></p>
+
+          <nav class="toc" aria-label="On this page">
+            <a href="#scenario">Why it happens</a>
+            <a href="#qty-mismatch">Qty mismatch</a>
+            <a href="#extra-line">Extra line</a>
+            <a href="#decision">Quick decision</a>
+          </nav>
+        </header>
+
+        <div class="channel-footprint__grid" style="margin-bottom:18px">
+          <article class="channel-card channel-card--lead">
+            <div class="channel-card__top">
+              <span class="channel-card__icon" aria-hidden="true">📊</span>
+            </div>
+            <h3 class="channel-card__name">Qty mismatch</h3>
+            <p class="channel-card__use">Receive <strong>actual qty</strong> in Logiwa · client/retailer updates Shopify manually</p>
+          </article>
+          <article class="channel-card channel-card--lead">
+            <div class="channel-card__top">
+              <span class="channel-card__icon" aria-hidden="true">➕</span>
+            </div>
+            <h3 class="channel-card__name">Extra line</h3>
+            <p class="channel-card__use"><strong>Keep</strong> on PO #1 per client/retailer · do not remove if manufacturer cross-shipped</p>
+          </article>
+        </div>
+
+        <h2 class="section-h" id="scenario">Why this happens — example walkthrough</h2>
+
+        <p class="ref-pill" style="display:inline-block;margin-bottom:14px"><strong>Example</strong> PO-1001 · ABC
+          Manufacturer · Mar 5, 2026</p>
+
+        <div class="arch-stack">
+          <div class="arch-stack__layer arch-stack__layer--demand">
+            <div class="arch-stack__head">
+              <span class="arch-stack__title">Step 1</span>
+              <span class="arch-stack__hint">ABC Manufacturer · combined shipment</span>
+            </div>
+            <div class="flow-row">
+              <span class="flow-pipeline__chip">PO #1: 100 Red Shirts ✅ expected</span>
+              <span class="flow-pipeline__chip">PO #2: 10 Blue Pants ❌ early / not on PO #1</span>
+            </div>
+            <p style="margin:10px 0 0;font-size:13px;color:var(--text-muted)"><strong>Why manufacturers do this:</strong>
+              extra stock ready · saves shipping cost · ships PO #2 partially early on PO #1 carton</p>
+          </div>
+          <div class="arch-stack__connector">↓ truck arrives at warehouse</div>
+          <div class="arch-stack__layer arch-stack__layer--hands">
+            <div class="arch-stack__head">
+              <span class="arch-stack__title">Step 2</span>
+              <span class="arch-stack__hint"><span class="tag tag--logiwa">Logiwa</span> · WMS → Receive → PO-1001</span>
+            </div>
+            <div class="flow-row">
+              <span class="flow-node flow-node--muted">Red Shirts: 100 ✅</span>
+              <span class="flow-node flow-node--muted">Blue Pants: 10 ❌ extra line</span>
+            </div>
+            <p style="margin:10px 0 0;font-size:13px;color:var(--text-muted)">Logiwa records <strong>actual</strong>
+              received qty · inventory +100 shirts +10 pants · PO marked Received in Logiwa (with extra line)</p>
+          </div>
+          <div class="arch-stack__connector">↓ sync to TechOMS</div>
+          <div class="arch-stack__layer arch-stack__layer--brain">
+            <div class="arch-stack__head">
+              <span class="arch-stack__title">Result</span>
+              <span class="arch-stack__hint"><span class="tag tag--techoms">TechOMS</span> · out of sync</span>
+            </div>
+            <div class="flow-row">
+              <span class="flow-node"><span class="tag tag--logiwa">Logiwa</span> Completed</span>
+              <span class="flow-arrow">≠</span>
+              <span class="flow-node"><span class="tag tag--techoms">TechOMS</span> Sent to Warehouse</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="sub-h">Ambiguity #1 — what to do with the extra line?</h3>
+
+        <div class="owner-grid">
+          <article class="owner-card">
+            <span class="owner-card__role">The problem</span>
+            <ul class="owner-tree">
+              <li>PO #2 not in TechOMS yet (not sent from Shopify)</li>
+              <li>Cannot create PO #2 manually — missing details</li>
+              <li>10 Blue Pants are physically here — must receive them</li>
+            </ul>
+          </article>
+          <article class="owner-card">
+            <span class="owner-card__role">Client/retailer decision</span>
+            <ul class="owner-tree">
+              <li>Add 10 Blue Pants to PO #1 manually in Logiwa</li>
+              <li><strong>Keep</strong> the extra line — do not remove</li>
+              <li>TechOMS PO #1 is locked — cannot add line there</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3 class="sub-h">Ambiguity #2 — PO quantity mismatch</h3>
+
+        <div class="channel-footprint__grid" style="margin-bottom:14px">
+          <article class="channel-card">
+            <h3 class="channel-card__name">Ordered (TechOMS / PO #1)</h3>
+            <p class="channel-card__use">100 Red Shirts only</p>
+          </article>
+          <article class="channel-card">
+            <h3 class="channel-card__name">Received (Logiwa actual)</h3>
+            <p class="channel-card__use">100 Red Shirts + 10 Blue Pants</p>
+          </article>
+        </div>
+
+        <div class="owner-grid">
+          <article class="owner-card">
+            <span class="owner-card__role">❌ Cannot do</span>
+            <ul class="owner-tree">
+              <li>Edit TechOMS PO #1 (locked)</li>
+              <li>Remove extra line from Logiwa (client/retailer wants it kept)</li>
+              <li>Auto-sync mismatch back to Shopify</li>
+            </ul>
+          </article>
+          <article class="owner-card">
+            <span class="owner-card__role">✅ Must do</span>
+            <ul class="owner-tree">
+              <li>Receive actual qty in Logiwa (100 shirts + 10 pants)</li>
+              <li>Keep extra line on PO #1 in Logiwa</li>
+              <li>Document discrepancy · client updates Shopify manually</li>
+            </ul>
+          </article>
+        </div>
+
+        <aside class="callout callout--note">
+          <span class="callout__icon">ℹ️</span>
+          <div>
+            <strong>Why TechOMS can't fix it</strong>
+            <p>PO is <strong>locked</strong> after processing · TechOMS does not support manually added Logiwa lines · no
+              automatic PO sync to Shopify. This is a <strong>business/process</strong> outcome, not a broken integration —
+              follow the policy sections below.</p>
+          </div>
+        </aside>
+
+        <h2 class="section-h" id="qty-mismatch">1 — Quantity mismatch</h2>
+
+        <div class="flow-chain flow-chain--tight">
+          <span class="flow-node"><span class="tag tag--logiwa">Logiwa</span> receive actual qty</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node flow-node--muted">TechOMS PO unchanged 🔒</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node"><span class="tag tag--shopify">Shopify</span> client fixes manually</span>
+        </div>
+
+        <aside class="callout callout--note">
+          <span class="callout__icon">ℹ️</span>
+          <div>
+            <strong>Can we sync the mismatch to the client?</strong>
+            <p><strong>No.</strong> TechOMS POs cannot be edited after lock — there is no automatic PO qty sync back to
+              the client. Receive the physical quantity in Logiwa; <strong>client/retailer must update their PO manually in
+                Shopify</strong> on their side.</p>
+          </div>
+        </aside>
+
+        <ul class="checklist" aria-label="Quantity mismatch handling">
+          <li>Receive actual quantity in Logiwa (short/over as physically counted)</li>
+          <li>Document discrepancy in ticket — ordered vs received</li>
+          <li>Notify client that TechOMS PO qty will not auto-update</li>
+          <li>Client updates PO in Shopify manually</li>
+          <li>Qty mismatch alone may not block receipt sync — still note it</li>
+        </ul>
+
+        <h2 class="section-h" id="extra-line">2 — Extra line (manufacturer cross-ship)</h2>
+
+        <div class="flow-chain flow-chain--tight">
+          <span class="flow-node flow-node--muted">PO #1 ships early</span>
+          <span class="flow-arrow">+</span>
+          <span class="flow-node flow-node--muted">item from PO #2 on same carton</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node"><span class="tag tag--logiwa">Logiwa</span> manual line on PO #1</span>
+        </div>
+
+        <aside class="callout callout--tip">
+          <span class="callout__icon">✅</span>
+          <div>
+            <strong>Client/retailer policy — keep the line</strong>
+            <p>Extra lines only cause sync issues on <strong>integration POs</strong> (TechOMS-managed). It is common for
+              manufacturers to ship an item from another open PO on the wrong shipment. If PO #2 is not in the system yet,
+              the only way to receive that physical unit is to <strong>add it manually to PO #1 in Logiwa</strong>.
+              The client/retailer has asked the team to <strong>keep it on PO #1</strong> — do <strong>not</strong> remove it.</p>
+          </div>
+        </aside>
+
+        <aside class="callout callout--warning">
+          <span class="callout__icon">⚠️</span>
+          <div>
+            <strong>Why TechOMS stays out of sync</strong>
+            <p>TechOMS does not support manually added Logiwa lines — status may stay <em>Sent to Warehouse</em> until
+              lines are reconciled or manually received. This is expected when cross-ship items are received before PO #2
+              exists.</p>
+          </div>
+        </aside>
+
+        <ul class="checklist" aria-label="Extra line handling">
+          <li>Confirm extra SKU was physically on the shipment (not a receiving mistake)</li>
+          <li>Check if item belongs to another open PO not yet in system</li>
+          <li>If client/retailer directed add-to-PO-1 — <strong>keep line</strong>, do not delete</li>
+          <li>Document which PO the item will eventually belong to</li>
+          <li>Follow <a href="status-mismatch.html">status mismatch checklist</a> if sync blocked</li>
+        </ul>
+
+        <h2 class="section-h" id="decision">Quick decision</h2>
+
+        <div class="table-wrap">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Situation</th>
+                <th>Our action</th>
+                <th>Client action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Received qty ≠ ordered qty</td>
+                <td>Receive actual qty in Logiwa</td>
+                <td>Update PO manually in Shopify</td>
+              </tr>
+              <tr>
+                <td>Extra line — manufacturer cross-ship (client/retailer)</td>
+                <td>Keep on PO #1 in Logiwa</td>
+                <td>Aware item landed early; may add PO #2 later</td>
+              </tr>
+              <tr>
+                <td>Extra line — added by mistake (wrong SKU)</td>
+                <td>Remove from Logiwa after supervisor confirm</td>
+                <td>Notify if inventory impact</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ref-pills">
+          <a class="ref-pill" href="status-mismatch.html">Status mismatch checklist →</a>
+          <a class="ref-pill" href="../purchase-order.html#faq">← All common questions</a>
+        </div>
+      </main>
+    </div>
+
+    <div class="search-overlay" id="search-overlay" hidden>
+      <div class="search-box" role="dialog" aria-label="Search handbook">
+        <input type="search" class="search-box__input" id="search-input" placeholder="Search processes, errors, systems, EDI docs…" autocomplete="off" />
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/search-index.js"></script>
+  <script src="../../assets/js/app.js"></script>
+</body>
+
+</html>
